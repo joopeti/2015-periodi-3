@@ -1,5 +1,6 @@
 package UI;
 import GameLogic.Hand;
+import java.util.ArrayList;
 import java.util.Scanner;
 /**
  *
@@ -17,18 +18,16 @@ public class TextUI {
     public int askHands(int round){
         System.out.println("/***********************/");
         System.out.println("Valitse kätesi: ");
-        System.out.println("(1)Kivi");
-        System.out.println("(2)Sakset");
-        System.out.println("(3)Paperi");
+        System.out.println("(1)Kivi (2)Sakset (3)Paperi (0)Lopeta peli");
         int option = sc.nextInt();
         return option;
     }
     
-    public boolean showResults(int round, int[][] results, Hand player, Hand ai){
+    public boolean showResults(int round, int[][] results, Hand player, Hand ai, ArrayList<Integer> historia, String tulos){
         System.out.println("/****** Round " + round + ". *******/");
-        System.out.println("Tulokset: ");
-        System.out.println("Sinun kätesi: " + player);
-        System.out.println("Tekoälyn käsi: " + ai);
+//        System.out.println("*" + historia.toString() + "*");
+        System.out.println(tulos);
+        System.out.println(player + " VS " + ai);
         System.out.println("Voitot: " + results[0][0] + ", Tasapelit: " + results[1][0] + ", Häviöt: " + results[2][0]);
         return true;
     }
