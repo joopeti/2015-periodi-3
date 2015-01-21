@@ -39,32 +39,23 @@ public class Game {
 //        this.players = ui.askPlayers();
         pisteet = new int[3][3];
         matriisi = new int[3][3];
-        setMatrix();
         running = true;
         turn = 1;
     }
 
     public void playRound() {
         int player = ui.askHands(turn) - 1;
-        int AI = ai.chooseHand(pelihistoria, matriisi);
+        int AI = ai.chooseHand();
 
         if (player == -1) {
             running = false;
         } else {
             checkWinners(player, AI);
-            pelihistoria.add(player);
-            updateMatrix();
+            ai.addToGameHistory(player);
+            ai.updateMatrix();
             running = ui.showResults(turn, pisteet, kadet[player], kadet[AI], pelihistoria, tulos);
 //            printMatrix();
             turn++;
-        }
-    }
-
-    public void updateMatrix() {
-        if(turn >= 2){
-        int viimeinen = pelihistoria.get(pelihistoria.size() - 1);
-        int toisiksiviimeinen = pelihistoria.get(pelihistoria.size() - 2);
-        matriisi[toisiksiviimeinen][viimeinen]++;
         }
     }
 
@@ -78,25 +69,6 @@ public class Game {
         } else {
             pisteet[2][0] += 1;
             tulos = "HÄVISIT!";
-        }
-    }
-
-    public void setMatrix() {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                matriisi[i][j] = 0;
-            }
-        }
-    }
-
-    public void printMatrix() {
-        System.out.println("  K S P");
-        for (int i = 0; i < 3; i++) {
-            System.out.print(kirjaimet[i] + ":");
-            for (int j = 0; j < 3; j++) {
-                System.out.print(matriisi[i][j] + " ");
-            }
-            System.out.println("");
         }
     }
 
