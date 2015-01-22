@@ -7,8 +7,8 @@ package GameLogic;
 
 import UI.*;
 
-/**
- *
+/**Hoitaa mahdollisesti kommunikoinnin pelilogiikan ja käyttöliittymän välillä.
+ * Tällä hetkellä ei käytössä.
  * @author joopeti
  */
 public class Controller {

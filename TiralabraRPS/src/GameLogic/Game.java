@@ -1,5 +1,6 @@
 package GameLogic;
 
+import Utils.Hand;
 import UI.*;
 import java.util.ArrayList;
 
@@ -11,31 +12,24 @@ public class Game {
 
     private Hand kasi;
     private Hand[] kadet;
-
     /** Valittu pelimoodi. Ei vielä käytössä.
      */
     public int gamemode;
-
     /** Valittu pelaajamäärä. Ei vielä käytössä.
      */
     public int players;
-
     /** Kierrolaskuri.
      */
     public int turn;
-
     /** Pisteytysmatriisi, käytössä vain ylin rivi. 0: pelaajan voitot, 1: tasapelit, 2: tekoälyn voitot.
      */
     public int pisteet[][];
-
     /** Tulos pelaajan näkökulmasta. Annetaan käyttöliittymälle.
      */
     public String tulos;
-
     /** Kertoo onko peli vielä käynnissä, vai lopettiko pelaaja pelaamisen.
      */
     public boolean running;
-
     private TextUI ui;
     private AI ai;
 

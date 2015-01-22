@@ -5,42 +5,64 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
-/** Tekoäly joka tallentaa tiedot pelaajan valinnoista ja omista valinnoista.
-     * Muodostaa menneistä valinnoista matriisit ja laskee niiden perusteella todennäköisimmän siirron.
-     * Pitää yllä myös metastrategialistaa, joka sisältää kaikki päästrategian variaatiot. 
-     * Pisteyttää metastrategioita tulosten perusteella ja valitsee parhaiten pärjänneen strategian ehdottaman käden.
-     */
+/**
+ * Tekoäly joka tallentaa tiedot pelaajan valinnoista ja omista valinnoista.
+ * Muodostaa menneistä valinnoista matriisit ja laskee niiden perusteella
+ * todennäköisimmän siirron. Pitää yllä myös metastrategialistaa, joka sisältää
+ * kaikki päästrategian variaatiot. Pisteyttää metastrategioita tulosten
+ * perusteella ja valitsee parhaiten pärjänneen strategian ehdottaman käden.
+ */
 public class AI {
 
-    /** Sisältää pelaajan kaikki edelliset valinnat. */
+    /**
+     * Sisältää pelaajan kaikki edelliset valinnat.
+     */
     public ArrayList<Integer> playermoves;
 
-    /** Sisältää tekoälyn kaikki edelliset valinnat. */
+    /**
+     * Sisältää tekoälyn kaikki edelliset valinnat.
+     */
     public ArrayList<Integer> aimoves;
 
-    /** Pelihistoriasta luotu matriisi, jota algoritmi käyttää pelaajan käden ennakoinnissa. */
+    /**
+     * Pelihistoriasta luotu matriisi, jota algoritmi käyttää pelaajan käden
+     * ennakoinnissa.
+     */
     public double[][] playermovematrix;
 
-    /** Tekoälyn omasta pelihistoriasta luotu matriisi, jota algoritmi käyttää kolmessa metastrategiassa. */
+    /**
+     * Tekoälyn omasta pelihistoriasta luotu matriisi, jota algoritmi käyttää
+     * kolmessa metastrategiassa.
+     */
     public double omamatriisi[][];
 
-    /** Metastrategioiden pistetyslista. */
+    /**
+     * Metastrategioiden pistetyslista.
+     */
     public double[] metapoints;
 
-    /** Metastrategioiden ehdottamat kädet. */
+    /**
+     * Metastrategioiden ehdottamat kädet.
+     */
     public int[] metastrat;
 
-    /** Antaa indeksin perusteella kokonaisluvun (=käden), joka voittaa indeksin (=annetun käden). */
+    /**
+     * Antaa indeksin perusteella kokonaisluvun (=käden), joka voittaa indeksin
+     * (=annetun käden).
+     */
     public int[] wins;
 
-    /** Parhaan metastrategian indeksi. */
+    /**
+     * Parhaan metastrategian indeksi.
+     */
     public int best;
 
     public Random rnd;
     private char[] kirjaimet = new char[]{'K', 'S', 'P'};
 
-    /** Tekoälyn konstruktori. 
-     * Luo tarvittavat matriisit ja listat sekä alustaa ne. 
+    /**
+     * Tekoälyn konstruktori. Luo tarvittavat matriisit ja listat sekä alustaa
+     * ne.
      */
     public AI() {
         rnd = new Random();
@@ -53,8 +75,10 @@ public class AI {
         initializeArrays();
     }
 
-    /** Ennakoi pelaajan seuraavan siirron ja palauttaa parhaiten menestyneimmän metastrategian ehdottaman käden.
-     * Jos pelihistoria on liian lyhyt, metodi palauttaa satunnaisen käden.
+    /**
+     * Ennakoi pelaajan seuraavan siirron ja palauttaa parhaiten menestyneimmän
+     * metastrategian ehdottaman käden. Jos pelihistoria on liian lyhyt, metodi
+     * palauttaa satunnaisen käden.
      */
     public int chooseHand() {
         if (playermoves.size() < 2) {
@@ -70,8 +94,10 @@ public class AI {
         }
     }
 
-    /** Metodi tarkistaa annetusta matriisista suurimman luvun annetulta riviltä (= lastmove)
-     * ja palauttaa sen. Jos suurinta lukua ei ole, palautetaan satunnainen luku.
+    /**
+     * Metodi tarkistaa annetusta matriisista suurimman luvun annetulta riviltä
+     * (= lastmove) ja palauttaa sen. Jos suurinta lukua ei ole, palautetaan
+     * satunnainen luku.
      */
     public int predictMove(double[][] matrice, int lastmove) {
         double rivi[] = matrice[lastmove];
@@ -87,9 +113,11 @@ public class AI {
 
     }
 
-    /** Päivittää metastrategioiden "kädet" annettujen ennustusten perusteella.
-     * Ensimmäiset kolme strategiaa tarkastelevat vain pelaajan historiaa ja jälkimmäiset kolme tekoälyn omaa pelihistoriaa.
-     * Viimeinen strategia on satunnainen.
+    /**
+     * Päivittää metastrategioiden "kädet" annettujen ennustusten perusteella.
+     * Ensimmäiset kolme strategiaa tarkastelevat vain pelaajan historiaa ja
+     * jälkimmäiset kolme tekoälyn omaa pelihistoriaa. Viimeinen strategia on
+     * satunnainen.
      */
     public void updateMetaHands(int prediction, int counter) {    // oletus: vastustaja valitsee kiven.
         metastrat[0] = wins[prediction];         // oletetaan, että pelaajan valinta on kivi, valitaan tällöin paperi
@@ -101,10 +129,11 @@ public class AI {
         metastrat[6] = rnd.nextInt(3);
     }
 
-    /** Päivittää metastrategioiden pisteet niiden suoritusten mukaan.
-     * Häviöstä strategia menettää yhden pisteen ja voitosta se saa yhden.
-     * Tasapelistä saa hieman lisäpisteitä. 
-     * Lopuksi kaikki pisteet kerrotaan vakiolla, jotta tekoäly "unohtaisi" vanhat tulokset.
+    /**
+     * Päivittää metastrategioiden pisteet niiden suoritusten mukaan. Häviöstä
+     * strategia menettää yhden pisteen ja voitosta se saa yhden. Tasapelistä
+     * saa hieman lisäpisteitä. Lopuksi kaikki pisteet kerrotaan vakiolla, jotta
+     * tekoäly "unohtaisi" vanhat tulokset.
      */
     public void updateMetaScores() {
         if (playermoves.size() > 2) {
@@ -116,18 +145,20 @@ public class AI {
                 } else {
                     metapoints[i] += 0.1;
                 }
-                metapoints[i] *= 0.9;
+                metapoints[i] *= 1.0;
             }
         }
     }
-    
-    /** Tarkastelee metastrategioiden pisteitä ja tallentaa sen strategian indeksin, jolla on korkein pisteytys muuttujaan best. 
+
+    /**
+     * Tarkastelee metastrategioiden pisteitä ja tallentaa sen strategian
+     * indeksin, jolla on korkein pisteytys muuttujaan best.
      */
-    public void checkBestMetaStrategy(){
+    public void checkBestMetaStrategy() {
         double d = metapoints[0];
         best = 0;
         for (int i = 1; i < 7; i++) {
-            if(metapoints[i] > d){
+            if (metapoints[i] > d) {
                 best = i;
                 d = metapoints[i];
             }
@@ -135,14 +166,16 @@ public class AI {
     }
 
     /**
-     * Päivittää pelaajan ja tekoälyn pelihistoriamatriisit pelihistorian perusteella.
+     * Päivittää pelaajan ja tekoälyn pelihistoriamatriisit pelihistorian
+     * perusteella.
      */
     public void updateMatrices() {
         if (playermoves.size() >= 2) {
             int viimeinen = playermoves.get(playermoves.size() - 1);
             int toisiksiviimeinen = playermoves.get(playermoves.size() - 2);
             playermovematrix[toisiksiviimeinen][viimeinen]++;
-
+        }
+        if (aimoves.size() >= 2) {
             int omaviimeinen = aimoves.get(aimoves.size() - 1);
             int omatokavika = aimoves.get(aimoves.size() - 2);
             omamatriisi[omatokavika][omaviimeinen]++;
@@ -150,7 +183,8 @@ public class AI {
     }
 
     /**
-     * Kertoo kaikki pelaajamatriisin luvut annetulla 
+     * Kertoo kaikki pelaajamatriisin luvut annetulla
+     *
      * @param d:lla
      */
     public void matrixDecay(double d) {
@@ -161,7 +195,9 @@ public class AI {
         }
     }
 
-    /** Alustaa matriisit. */
+    /**
+     * Alustaa matriisit.
+     */
     public final void setMatrix() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -171,7 +207,9 @@ public class AI {
         }
     }
 
-    /** Tallentaa 
+    /**
+     * Tallentaa
+     *
      * @param player:in pelaajahistoriaan ja
      * @param oma:n tekoälyn pelihistoriaan.
      */
@@ -180,7 +218,8 @@ public class AI {
         aimoves.add(oma);
     }
 
-    /** Tulostaa pelaajamatriisin debuggausta varten.
+    /**
+     * Tulostaa pelaajamatriisin debuggausta varten.
      */
     public void printMatrix() {
         System.out.println("   K   S   P");
@@ -194,7 +233,8 @@ public class AI {
         }
     }
 
-    /** Tulostaa Metastrategioiden pisteytyksen ja valitseman käden.
+    /**
+     * Tulostaa Metastrategioiden pisteytyksen ja valitseman käden.
      */
     public void printMetascores() {
         System.out.print("[");
@@ -211,7 +251,8 @@ public class AI {
         System.out.println("best: " + best);
     }
 
-    /** Alustaa tarvittavat listat ja arrayListat sekä voittolistan.
+    /**
+     * Alustaa tarvittavat listat ja arrayListat sekä voittolistan.
      *
      */
     public void initializeArrays() {

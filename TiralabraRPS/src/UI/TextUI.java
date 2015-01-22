@@ -1,5 +1,5 @@
 package UI;
-import GameLogic.Hand;
+import Utils.Hand;
 import java.util.Scanner;
 
 /** Tekstikäyttöliittymä Kivi-Sakset-Paperi-pelille.
@@ -73,5 +73,6 @@ public class TextUI {
         int option = sc.nextInt();
         return option;
     }
+    
     
 }
