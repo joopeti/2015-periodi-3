@@ -1,20 +1,26 @@
 package UI;
 import GameLogic.Hand;
-import java.util.ArrayList;
 import java.util.Scanner;
-/**
- *
+
+/** Tekstikäyttöliittymä Kivi-Sakset-Paperi-pelille.
  * @author joopeti
  */
 public class TextUI {
     private Scanner sc;
     private Hand hand;
     
+    /** 
+     *
+     */
     public TextUI(){
         sc = new Scanner(System.in);
-        
     }
     
+    /**
+     *
+     * @param round
+     * @return
+     */
     public int askHands(int round){
         System.out.println("/***********************/");
         System.out.println("Valitse kätesi: ");
@@ -23,7 +29,16 @@ public class TextUI {
         return option;
     }
     
-    public boolean showResults(int round, int[][] results, Hand player, Hand ai, ArrayList<Integer> historia, String tulos){
+    /** Ottaa vastaan tiedot kierrokselta ja näyttää pelaajalle kierrosnumeron, tuloksen, oman ja tekoälyn käden ja kokonaistulokset.
+     *
+     * @param round
+     * @param results
+     * @param player
+     * @param ai
+     * @param tulos
+     * @return
+     */
+    public boolean showResults(int round, int[][] results, Hand player, Hand ai, String tulos){
         System.out.println("/****** Round " + round + ". *******/");
 //        System.out.println("*" + historia.toString() + "*");
         System.out.println(tulos);
@@ -32,6 +47,9 @@ public class TextUI {
         return true;
     }
     
+    /** Palauttaa kokonaislukuna pelaajan valitseman pelitilan.
+     * @return
+     */
     public int askGameMode(){
         System.out.println("/************************/");
         System.out.println("Valitse pelimoodi: ");
@@ -42,6 +60,10 @@ public class TextUI {
         return option;
     }
     
+    /** Palauttaa kokonaislukuna pelaajan valitseman pelaajamäärän. Käyttämätön tällä hetkellä.
+     *
+     * @return
+     */
     public int askPlayers(){
         System.out.println("Valitse pelaajamäärä: ");
         System.out.println("(1)");
@@ -50,12 +72,6 @@ public class TextUI {
         System.out.println("/************************/");
         int option = sc.nextInt();
         return option;
-    }
-    
-    
-    
-    public void drawTurn(){
-        
     }
     
 }
