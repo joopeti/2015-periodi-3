@@ -38,12 +38,12 @@ public class TextUI {
      * @param tulos
      * @return
      */
-    public boolean showResults(int round, int[][] results, Hand player, Hand ai, String tulos){
+    public boolean showResults(int round, int[] results, Hand player, Hand ai, String tulos){
         System.out.println("/****** Round " + round + ". *******/");
 //        System.out.println("*" + historia.toString() + "*");
         System.out.println(tulos);
         System.out.println(player + " VS " + ai);
-        System.out.println("Voitot: " + results[0][0] + ", Tasapelit: " + results[1][0] + ", Häviöt: " + results[2][0]);
+        System.out.println("Voitot: " + results[0] + ", Tasapelit: " + results[1] + ", Häviöt: " + results[2]);
         return true;
     }
     
@@ -72,6 +72,10 @@ public class TextUI {
         System.out.println("/************************/");
         int option = sc.nextInt();
         return option;
+    }
+    
+    public void errorMessage(){
+        System.out.println("Valitsemasi numero ei ollut kelvollinen, valitse uudestaan.");
     }
     
     

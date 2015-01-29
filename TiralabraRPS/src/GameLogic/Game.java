@@ -1,8 +1,8 @@
 package GameLogic;
 
+import AI.*;
 import Utils.Hand;
 import UI.*;
-import java.util.ArrayList;
 
 /**
  * Game Sisältää pelilogiikan, tarkistaa pisteet ja hoitaa kommunikaation tekoälyn, pelaajan ja käyttöliittymän välillä.
@@ -23,21 +23,20 @@ public class Game {
     public int turn;
     /** Pisteytysmatriisi, käytössä vain ylin rivi. 0: pelaajan voitot, 1: tasapelit, 2: tekoälyn voitot.
      */
-    public int pisteet[][];
-    /** Tulos pelaajan näkökulmasta. Annetaan käyttöliittymälle.
-     */
     public String tulos;
     /** Kertoo onko peli vielä käynnissä, vai lopettiko pelaaja pelaamisen.
      */
     public boolean running;
     private TextUI ui;
-    private AI ai;
+    private StrategyHandler ai;
+    private Statistics st;
 
     /** Alustaa käyttöliittymän ja tekoälyn.
      */
     public Game() {
         this.ui = new TextUI();
-        this.ai = new AI();
+        this.ai = new StrategyHandler();
+        this.st = new Statistics();
         kadet = new Hand[]{kasi.Kivi, kasi.Sakset, kasi.Paperi};
         running = false;
     }
@@ -47,9 +46,8 @@ public class Game {
     public void setSettings() {
 //        this.gamemode = ui.askGameMode();
 //        this.players = ui.askPlayers();
-        pisteet = new int[3][3];
         running = true;
-        turn = 1;
+        Statistics.round = 1;
     }
 
     /** Ottaa pelaajan ja tekoälyn valitsemat kädet ja laskee kierroksen tuloksen ja näyttää sen käyttöliittymän kautta.
@@ -63,14 +61,16 @@ public class Game {
             running = false;
         } else {
             checkWinners(player, AI);
-            ai.addToGameHistory(player, AI);
-            ai.updateMatrices();
+            st.updatePlayerAndAiMoves(player, AI);
             ai.updateMetaScores();
-//            ai.matrixDecay(0.9);
-            ai.printMatrix();
+            ai.updateMetaChoices();
             ai.printMetascores();
-            ui.showResults(turn, pisteet, kadet[player], kadet[AI], tulos);
-            turn++;
+//            ai.printMetaChoices();
+            ai.printDecay();
+            st.showMoveHistory();
+            ui.showResults(Statistics.round, st.getRoundStatistics(), kadet[player], kadet[AI], tulos);
+            st.roundIncrement();
+            ai.updateStrategiesAfterRound();
         }
     }
 
@@ -81,13 +81,13 @@ public class Game {
      */
     public void checkWinners(int pelaaja, int tekoaly) {
         if (pelaaja == tekoaly) {
-            pisteet[1][0] += 1;
+            st.updateRoundStatistics(1);
             tulos = "TASAPELI";
         } else if ((pelaaja == 0 && tekoaly == 1) || (pelaaja == 1 && tekoaly == 2) || (pelaaja == 2 && tekoaly == 0)) {
-            pisteet[0][0] += 1;
+            st.updateRoundStatistics(0);
             tulos = "VOITIT!";
         } else {
-            pisteet[2][0] += 1;
+            st.updateRoundStatistics(2);
             tulos = "HÄVISIT!";
         }
     }
@@ -98,18 +98,14 @@ public class Game {
     public void start() {
         setSettings();
         while (running) {
-            playRound((ui.askHands(turn) - 1), ai.chooseHand());
+            int choice = ui.askHands(turn);
+                if(choice < 0 || choice > 3){
+                    ui.errorMessage();
+                    continue;
+                }
+            playRound(choice - 1, ai.chooseHand());
         }
-//        showStatistics();
-    }
-
-    /** Muodostaa merkkijonon pelatuista käsistä. 
-     * Voitaisiin käyttää merkkijonoa hyödyntävissä hahmontunnistusalgoritmeissa.
-     * @param pelaaja
-     * @param tekoaly
-     */
-    public void createStringFromRounds(int pelaaja, int tekoaly) {
-//        pelihistoria += kirjaimet[tekoaly];
-//        pelihistoria += kirjaimet[pelaaja];
+        st.printStatistics();
+        st.saveGameStatsToFile();
     }
 }
