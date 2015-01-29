@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GameLogic;
+package AI;
 
 import AI.MarkovFirstOrder;
 import AI.MarkovFirstOrder;
+import GameLogic.Statistics;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -115,24 +116,28 @@ public class MarkovFirstOrderTest {
         boolean foundNonZero = false;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (ai.playerFirstOrderMatrix[i][j] != 0) {
+                if (ai.playerFirstOrderMatrix[i][j] != 0.0) {
                     foundNonZero = true;
                 }
             }
         }
-        assertTrue(foundNonZero);
+        assertTrue(!foundNonZero);
     }
 
     public void AiMatrixIsOnlyZeroesAfterSetMatrix() {
         boolean foundNonZero = false;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (ai.aiFirstOrderMatrix[i][j] != 0) {
+                if (ai.aiFirstOrderMatrix[i][j] != 0.0) {
                     foundNonZero = true;
                 }
             }
         }
-        assertTrue(foundNonZero);
+        assertTrue(!foundNonZero);
+    }
+    
+    public void getFirstRoundToUpdateModelsGivesThree(){
+        assertEquals(3, ai.getFirstRoundToUpdateModels());
     }
 
 }
