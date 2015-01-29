@@ -21,7 +21,7 @@ public class Game {
     /** Kierrolaskuri.
      */
     public int turn;
-    /** Pisteytysmatriisi, käytössä vain ylin rivi. 0: pelaajan voitot, 1: tasapelit, 2: tekoälyn voitot.
+    /** Merkkijono joka kertoo pelaajalle edellisen kierroksen tuloksen.
      */
     public String tulos;
     /** Kertoo onko peli vielä käynnissä, vai lopettiko pelaaja pelaamisen.
@@ -47,6 +47,7 @@ public class Game {
 //        this.gamemode = ui.askGameMode();
 //        this.players = ui.askPlayers();
         running = true;
+        ai.addStrategy(new MarkovFirstOrder());
         Statistics.round = 1;
     }
 
@@ -64,9 +65,9 @@ public class Game {
             st.updatePlayerAndAiMoves(player, AI);
             ai.updateMetaScores();
             ai.updateMetaChoices();
-            ai.printMetascores();
+//            ai.printMetascores();
 //            ai.printMetaChoices();
-            ai.printDecay();
+//            ai.printDecay();
             st.showMoveHistory();
             ui.showResults(Statistics.round, st.getRoundStatistics(), kadet[player], kadet[AI], tulos);
             st.roundIncrement();
@@ -98,12 +99,9 @@ public class Game {
     public void start() {
         setSettings();
         while (running) {
-            int choice = ui.askHands();
-                if(choice < 0 || choice > 3){
-                    ui.errorMessage();
-                    continue;
-                }
-            playRound(choice - 1, ai.chooseHand());
+            int choice = ui.chooseHand();
+                
+            playRound(choice - 1, ai.chooseHand(ui));
         }
         st.printStatistics();
         st.saveGameStatsToFile();

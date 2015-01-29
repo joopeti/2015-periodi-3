@@ -1,10 +1,12 @@
 
 package Utils;
 
+import java.util.Iterator;
+
 /** Lista jonka koko kasvaa automaattisesti tarvittaessa.
  * @param <Object>
  */
-public class Lista<E> {
+public class Lista<E> implements Iterable{
     private int size = 0;
     private final int capacity = 10;
     private Object[] list;
@@ -20,11 +22,11 @@ public class Lista<E> {
         list[size++] = a;
     }
     
-    public Object get(int i){
+    public E get(int i){
         if(i < 0 || i >= size){
             throw new ArrayIndexOutOfBoundsException("Tarkistetaanpa ne indeksit! " + i);
         }
-        return list[i];
+        return (E) list[i];
     }
     
     public void remove(int i){
@@ -59,5 +61,10 @@ public void print(){
     }
     System.out.println("]");
 }
+
+    @Override
+    public Iterator iterator() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

@@ -1,6 +1,8 @@
 package AI;
 
+import GameLogic.Player;
 import GameLogic.Statistics;
+import UI.TextUI;
 import Utils.Lista;
 import java.util.ArrayList;
 import java.util.Random;
@@ -9,7 +11,7 @@ import java.util.Random;
  * Pisteyttää eri strategiat ja palauttaa parhaan strategian ehdottaman käden.
  * Huolehtii strategioiden päivittämisestä.
  */
-public class StrategyHandler {
+public class StrategyHandler extends Player{
 
     /**
      * Metastrategioiden pistetytys ja valintalistat. metastrategiat
@@ -24,21 +26,20 @@ public class StrategyHandler {
     public ArrayList<Strategy> strategies;
     /**
      * Antaa indeksin perusteella kokonaisluvun (=käden), joka voittaa indeksin
-     * (=annetun käden).
+     * (=annetun käden). Esim 0 = kivi, 2 = paperi wins[0] == 2;
      */
     public int[] wins = new int[]{2, 0, 1};
 
     public StrategyHandler() {
-        numStrat = 3;
-        numMeta = 6;
+        numStrat = 0;
+        numMeta = 3;
         stratPerformance = new double[3][6];
         stratChoice = new int[3][6];
         decayMultiplier = 0.95;
         strategies = new ArrayList();
         rnd = new Random();
-        Strategy markov1 = new MarkovFirstOrder();
-        Strategy markov2 = new MarkovSecondOrder();
-        strategies.add(markov1);
+//        Strategy markov1 = new MarkovFirstOrder();
+//        strategies.add(markov1);
     }
 
     /**
@@ -48,7 +49,8 @@ public class StrategyHandler {
      *
      * @return
      */
-    public int chooseHand() {
+    @Override
+    public int chooseHand(TextUI ui) {
         if (Statistics.round > 2) {
             return getBestChoice();
         } else {
@@ -62,7 +64,7 @@ public class StrategyHandler {
      * jälkimmäiset kolme tekoälyn omaa pelihistoriaa.
      */
     public void updateMetaChoices() {
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < numStrat; i++) {
             int prediction = strategies.get(i).predictPlayerMove();
             int counter = strategies.get(i).predictAiMove();
             stratChoice[i][0] = wins[prediction];
@@ -74,15 +76,14 @@ public class StrategyHandler {
         }
     }
 
-    /**
-     *
+    /** Palauttaa parhaan metastrategian ehdottaman käden.
      * @return
      */
     public int getBestChoice() {
         double points = -999;
         int bestChoice = 0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 6; j++) {
+        for (int i = numStrat; i >= 0; i--) {
+            for (int j = numMeta; j >= 0; j--) {
                 if (stratPerformance[i][j] > points) {
                     points = stratPerformance[i][j];
                     bestChoice = stratChoice[i][j];
@@ -92,7 +93,8 @@ public class StrategyHandler {
         return bestChoice;
     }
 
-    /** 
+    /**  Päivittää decay-arvon ja pyytää jokaista strategiaa päivittämään omat tietonsa
+     * ja mahdollisesti kertomaan ne decay:llä.
      *
      */
     public void updateStrategiesAfterRound() {
@@ -111,8 +113,8 @@ public class StrategyHandler {
      * tekoäly "unohtaisi" vanhat tulokset.
      */
     public void updateMetaScores() {
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 3; j++) {
+        for (int i = 0; i < numStrat; i++) {
+            for (int j = 0; j < numMeta; j++) {
                 if (stratChoice[i][j] == wins[Statistics.getLastPlayerMove()]) {
                     stratPerformance[i][j] += 1.0;
                 } else if (Statistics.getLastPlayerMove() == wins[stratChoice[i][j]]) {
@@ -126,7 +128,6 @@ public class StrategyHandler {
     }
     
     /** Päivittää decay-kerrointa viime tuloksen perusteella.
-     *
      * @param winner
      */
     public void updateMultiplier(int winner){
@@ -144,6 +145,14 @@ public class StrategyHandler {
             decayMultiplier = 0.1;
         }
     
+    }
+    
+    /** Lisää strategialistaan annetun strategian.
+     * @param s 
+     */
+    public void addStrategy(Strategy s){
+        strategies.add(s);
+        numStrat++;
     }
 
     /**
@@ -175,9 +184,6 @@ public class StrategyHandler {
         }
     }
     
-    /**
-     *
-     */
     public void printDecay(){
         System.out.printf("%2.2f", decayMultiplier);
         System.out.println("");

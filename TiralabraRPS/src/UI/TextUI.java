@@ -19,7 +19,7 @@ public class TextUI {
     /**
      * @return
      */
-    public int askHands(){
+    public int chooseHand(){
         System.out.println("/***********************/");
         System.out.println("Valitse kätesi: ");
         System.out.println("(1)Kivi (2)Sakset (3)Paperi (0)Lopeta peli");

@@ -130,6 +130,10 @@ public class MarkovFirstOrder extends Strategy {
         }
     }
 
+    /**
+     * Antaa kierrosnumeron, jolla algoritmi voi alkaa päivittää itseään tulosten perusteella.
+     * @return 
+     */
     @Override
     public int getFirstRoundToUpdateModels() {
         return 3;
