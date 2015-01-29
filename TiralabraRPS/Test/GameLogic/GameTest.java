@@ -21,10 +21,12 @@ import static org.junit.Assert.*;
 public class GameTest {
 
     public Game game;
+    public Statistics st;
 
     @Before
     public void setUp() {
         game = new Game();
+        st = new Statistics();
     }
 
     @Test
@@ -36,7 +38,7 @@ public class GameTest {
     @Test
     public void gameTurnIsOneAfterSettings() {
         game.setSettings();
-        assertEquals(1, game.turn);
+        assertEquals(1, Statistics.round);
     }
 
     @Test
@@ -50,16 +52,25 @@ public class GameTest {
     public void turnIncrementsAfterPlayedRound() {
         game.setSettings();
         game.playRound(1, 1);
-        assertEquals(2, game.turn);
+        assertEquals(2, Statistics.round);
     }
 
     @Test
-    public void checkWinnersGivesCorrectPointsForWin() {
+    public void checkWinnersUpdatesScoresWhenPlayerWins() {
         game.setSettings();
         for (int i = 0; i < 10; i++) {
             game.checkWinners(0, 1);
         }
-        assertEquals(10, game.pisteet[0][0]);
+        assertEquals(10, Statistics.roundStats[0]);
+    }
+    
+        @Test
+    public void checkWinnersUpdatesScoresWhenAiWins() {
+        game.setSettings();
+        for (int i = 0; i < 10; i++) {
+            game.checkWinners(2, 1);
+        }
+        assertEquals(10, Statistics.roundStats[2]);
     }
 
     @Test
@@ -68,7 +79,7 @@ public class GameTest {
         for (int i = 0; i < 10; i++) {
             game.checkWinners(1, 0);
         }
-        assertEquals(0, game.pisteet[0][0]);
+        assertEquals(0, Statistics.roundStats[0]);
     }
 
     @Test
@@ -79,6 +90,6 @@ public class GameTest {
             game.checkWinners(0, 0);
             game.checkWinners(2, 2);
         }
-        assertEquals(30, game.pisteet[1][0]);
+        assertEquals(30, Statistics.roundStats[1]);
     }
 }

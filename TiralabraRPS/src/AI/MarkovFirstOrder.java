@@ -26,7 +26,7 @@ public class MarkovFirstOrder extends Strategy {
      * Tekoälyn konstruktori. Luo tarvittavat matriisit ja listat sekä alustaa
      * ne.
      */
-    public MarkovFirstOrder(){
+    public MarkovFirstOrder() {
         super();
         rnd = new Random();
         playerFirstOrderMatrix = new double[3][3];
@@ -81,22 +81,20 @@ public class MarkovFirstOrder extends Strategy {
     /**
      * Päivittää pelaajan ja tekoälyn pelihistoriamatriisit pelihistorian
      * perusteella. Strategyhandleri säätää decayta tuloksen mukaan.
+     *
      * @param decay
      */
     @Override
     public void updateModels(double decay) {
         int[] pmoves = Statistics.getLastTwoPlayerMoves();
         int[] aimoves = Statistics.getLastTwoAiMoves();
-        if (Statistics.round > 2) {
-            playerFirstOrderMatrix[pmoves[0]][pmoves[1]]++;
-            aiFirstOrderMatrix[aimoves[0]][aimoves[1]]++;
-        }
+        playerFirstOrderMatrix[pmoves[0]][pmoves[1]]++;
+        aiFirstOrderMatrix[aimoves[0]][aimoves[1]]++;
         matrixDecay(decay);
     }
 
     /**
      * Kertoo kaikki pelaajamatriisin luvut annetulla
-     *
      * @param d:lla
      */
     public void matrixDecay(double d) {

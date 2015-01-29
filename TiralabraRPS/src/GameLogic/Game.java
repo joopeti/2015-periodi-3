@@ -98,7 +98,7 @@ public class Game {
     public void start() {
         setSettings();
         while (running) {
-            int choice = ui.askHands(turn);
+            int choice = ui.askHands();
                 if(choice < 0 || choice > 3){
                     ui.errorMessage();
                     continue;

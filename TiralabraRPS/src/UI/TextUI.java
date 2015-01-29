@@ -17,11 +17,9 @@ public class TextUI {
     }
     
     /**
-     *
-     * @param round
      * @return
      */
-    public int askHands(int round){
+    public int askHands(){
         System.out.println("/***********************/");
         System.out.println("Valitse kätesi: ");
         System.out.println("(1)Kivi (2)Sakset (3)Paperi (0)Lopeta peli");
