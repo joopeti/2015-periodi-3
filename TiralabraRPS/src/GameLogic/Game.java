@@ -38,11 +38,14 @@ public class Game {
         this.ui = new TextUI();
         this.st = new Statistics();
         kadet = new Hand[]{kasi.Kivi, kasi.Sakset, kasi.Paperi};
-        p1 = new StrategyHandler(0, 6, 0.95);
-        p2 = new StrategyHandler(2, 3, 0.95);
-        p1.addStrategy(new MarkovFirstOrder());
+//        p1 = new StrategyHandler(0, 3, 0.95, false);
+        p1 = new Player();
+        p2 = new StrategyHandler(2, 1, 0.95, true);
+//        p1.addStrategy(new MarkovSecondOrder());
+//        p1.addStrategy(new MarkovSecondOrder());
+        p2.addStrategy(new MarkovSecondOrder());
         p2.addStrategy(new MarkovFirstOrder());
-        
+//        p2.addStrategy(new StupidAi());
         running = false;
     }
 
@@ -62,18 +65,22 @@ public class Game {
      * @param AI
      */
     public void playRound(int player, int AI) {
-        if (player == -1 || Statistics.round > 50) {
+        if (player == -1 || Statistics.round > 100) {
             running = false;
-            ui.showResults(Statistics.round, st.getRoundStatistics(), kadet[player], kadet[AI], tulos);
+            ui.showResults(Statistics.round, st.getRoundStatistics(), kadet[0], kadet[0], tulos);
+            p1.printMetascores();
+            p2.printMetascores();
 //            p1.printMetascores();
 //            p1.printMetaChoices();
 //            p1.printDecay();
         } else {
             checkResults(player, AI);
+            p2.printMetascores();
+            ui.showResults(Statistics.round, st.getRoundStatistics(), kadet[player], kadet[AI], tulos);
             st.updatePlayerAndAiMoves(player, AI);
             p1.afterRoundUpdate();
             p2.afterRoundUpdate();
-//            st.showMoveHistory();
+            st.showMoveHistory();
             st.roundIncrement();
         }
     }

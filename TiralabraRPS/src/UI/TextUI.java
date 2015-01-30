@@ -9,9 +9,6 @@ public class TextUI {
     private Scanner sc;
     private Hand hand;
     
-    /** 
-     *
-     */
     public TextUI(){
         sc = new Scanner(System.in);
     }

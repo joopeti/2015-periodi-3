@@ -27,7 +27,6 @@ public class MarkovFirstOrder extends Strategy {
      * ne.
      */
     public MarkovFirstOrder() {
-        super();
         rnd = new Random();
         playerFirstOrderMatrix = new double[3][3];
         aiFirstOrderMatrix = new double[3][3];
@@ -100,6 +99,7 @@ public class MarkovFirstOrder extends Strategy {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 playerFirstOrderMatrix[i][j] *= d;
+                aiFirstOrderMatrix[i][j] *= d;
             }
         }
     }

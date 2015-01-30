@@ -22,7 +22,7 @@ public class Player {
     public void afterRoundUpdate(){
     }
     public void addStrategy(Strategy s){
-    };
-
-    
+    }
+    public void printMetascores(){
+    }
 }

@@ -1,7 +1,7 @@
 package AI;
 
-/** Strategioiden yliluokka, mahdollistaa yhtenevät operaatiot erilaisillekin algoritmeille.
- *
+/** 
+ * Strategioiden yliluokka, mahdollistaa yhtenevät operaatiot erilaisillekin algoritmeille.
  */
 public abstract class Strategy {
     public abstract int predictPlayerMove();
