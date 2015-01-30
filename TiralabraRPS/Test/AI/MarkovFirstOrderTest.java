@@ -40,62 +40,62 @@ public class MarkovFirstOrderTest {
 
     @Test
     public void predictPlayerMoveWorksRight() {
-        Statistics.playermoves.add(2);
+        Statistics.p1moves.add(2);
         int prediction = ai.predictPlayerMove();
         assertEquals(2, prediction);
     }
 
     @Test
     public void predictPlayerMoveWorksRight2() {
-        Statistics.playermoves.add(1);
+        Statistics.p1moves.add(1);
         int prediction = ai.predictPlayerMove();
         assertEquals(2, prediction);
     }
 
     @Test
     public void predictPlayerMoveWorksRight3() {
-        Statistics.playermoves.add(0);
+        Statistics.p1moves.add(0);
         int prediction = ai.predictPlayerMove();
         assertEquals(1, prediction);
     }
 
     @Test
     public void predictAiMoveWorksRight() {
-        Statistics.aimoves.add(0);
+        Statistics.p2moves.add(0);
         int prediction = ai.predictAiMove();
         assertEquals(0, prediction);
     }
 
     @Test
     public void predictAiMoveWorksRight2() {
-        Statistics.aimoves.add(1);
+        Statistics.p2moves.add(1);
         int prediction = ai.predictAiMove();
         assertEquals(1, prediction);
     }
 
     @Test
     public void predictAiMoveWorksRight3() {
-        Statistics.aimoves.add(2);
+        Statistics.p2moves.add(2);
         int prediction = ai.predictAiMove();
         assertEquals(2, prediction);
     }
 
     @Test
     public void updateModelsIncrementsRightValue() {
-        Statistics.aimoves.add(0);
-        Statistics.aimoves.add(1);
-        Statistics.playermoves.add(0);
-        Statistics.playermoves.add(2);
+        Statistics.p2moves.add(0);
+        Statistics.p2moves.add(1);
+        Statistics.p1moves.add(0);
+        Statistics.p1moves.add(2);
         ai.updateModels(1.00);
         assertTrue(1.99 < ai.playerFirstOrderMatrix[0][2]);
     }
 
     @Test
     public void updateModelsIncrementsRightValue2() {
-        Statistics.aimoves.add(1);
-        Statistics.aimoves.add(2);
-        Statistics.playermoves.add(0);
-        Statistics.playermoves.add(2);
+        Statistics.p2moves.add(1);
+        Statistics.p2moves.add(2);
+        Statistics.p1moves.add(0);
+        Statistics.p1moves.add(2);
         ai.updateModels(1.00);
         assertTrue(1.99 < ai.aiFirstOrderMatrix[1][2]);
     }

@@ -21,10 +21,10 @@ public class StrategyHandlerTest {
     public StrategyHandlerTest() {
         st = new StrategyHandler();
         mk = new MarkovFirstOrder();
-        Statistics.playermoves.add(0);
-        Statistics.playermoves.add(2);
-        Statistics.aimoves.add(2);
-        Statistics.aimoves.add(1);
+        Statistics.p1moves.add(0);
+        Statistics.p1moves.add(2);
+        Statistics.p2moves.add(2);
+        Statistics.p2moves.add(1);
     }
     
     @Before

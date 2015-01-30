@@ -14,7 +14,7 @@ import java.util.Random;
 public class StrategyHandler extends Player{
 
     /**
-     * Metastrategioiden pistetytys ja valintalistat. metastrategiat
+     * Metastrategioiden pistetytys ja valintalistat.
      */
     public double[][] stratPerformance;
     public int[][] stratChoice;
@@ -22,6 +22,7 @@ public class StrategyHandler extends Player{
     public int numMeta;
     public double decayMultiplier;
     public Random rnd;
+    public int id;
 
     public ArrayList<Strategy> strategies;
     /**
@@ -30,16 +31,15 @@ public class StrategyHandler extends Player{
      */
     public int[] wins = new int[]{2, 0, 1};
 
-    public StrategyHandler() {
+    public StrategyHandler(int id, int numMeta, double decay) {
+        this.id = id;
         numStrat = 0;
-        numMeta = 3;
+        this.numMeta = 3;
         stratPerformance = new double[3][6];
         stratChoice = new int[3][6];
-        decayMultiplier = 0.95;
+        decayMultiplier = decay;
         strategies = new ArrayList();
         rnd = new Random();
-//        Strategy markov1 = new MarkovFirstOrder();
-//        strategies.add(markov1);
     }
 
     /**
@@ -57,6 +57,16 @@ public class StrategyHandler extends Player{
             return rnd.nextInt(3);
         }
     }
+    /**
+     * 
+     */
+        
+    @Override
+    public void afterRoundUpdate(){
+        updateMetaScores();
+        updateAllStrategyModels();
+        updateMetaChoices();
+    }
 
     /**
      * Päivittää metastrategioiden valinnat annettujen ennustusten perusteella.
@@ -67,6 +77,11 @@ public class StrategyHandler extends Player{
         for (int i = 0; i < numStrat; i++) {
             int prediction = strategies.get(i).predictPlayerMove();
             int counter = strategies.get(i).predictAiMove();
+            if(this.id == 0){
+                int tmp = prediction;
+                prediction = counter;
+                counter = tmp;
+            }
             stratChoice[i][0] = wins[prediction];
             stratChoice[i][1] = prediction;
             stratChoice[i][2] = wins[stratChoice[i][0]];
@@ -76,7 +91,8 @@ public class StrategyHandler extends Player{
         }
     }
 
-    /** Palauttaa parhaan metastrategian ehdottaman käden.
+    /** 
+     * Palauttaa parhaan metastrategian ehdottaman käden.
      * @return
      */
     public int getBestChoice() {
@@ -93,12 +109,12 @@ public class StrategyHandler extends Player{
         return bestChoice;
     }
 
-    /**  Päivittää decay-arvon ja pyytää jokaista strategiaa päivittämään omat tietonsa
+    /**  
+     * Päivittää decay-arvon ja pyytää jokaista strategiaa päivittämään omat tietonsa
      * ja mahdollisesti kertomaan ne decay:llä.
-     *
      */
-    public void updateStrategiesAfterRound() {
-        updateMultiplier(Statistics.winner);
+    public void updateAllStrategyModels() {
+        updateMultiplier();
         for (Strategy strat : strategies) {
             if(Statistics.round >= strat.getFirstRoundToUpdateModels()){
             strat.updateModels(decayMultiplier);
@@ -115,9 +131,9 @@ public class StrategyHandler extends Player{
     public void updateMetaScores() {
         for (int i = 0; i < numStrat; i++) {
             for (int j = 0; j < numMeta; j++) {
-                if (stratChoice[i][j] == wins[Statistics.getLastPlayerMove()]) {
+                if (stratChoice[i][j] == wins[Statistics.getLastOpponentMove(id)]) {
                     stratPerformance[i][j] += 1.0;
-                } else if (Statistics.getLastPlayerMove() == wins[stratChoice[i][j]]) {
+                } else if (Statistics.getLastOpponentMove(id) == wins[stratChoice[i][j]]) {
                     stratPerformance[i][j] -= 1.0;
                 } else {
                     stratPerformance[i][j] += 0.0;
@@ -127,16 +143,17 @@ public class StrategyHandler extends Player{
         }
     }
     
-    /** Päivittää decay-kerrointa viime tuloksen perusteella.
+    /** 
+     * Päivittää decay-kerrointa viime tuloksen perusteella.
      * @param winner
      */
-    public void updateMultiplier(int winner){
-        if(winner == 0){
-            decayMultiplier *= 0.9;
+    public void updateMultiplier(){
+        if(id == Statistics.winner){
+            decayMultiplier *= 1.1;
         } else if(Statistics.winner == 1){
             decayMultiplier *= 0.95;
         } else{
-            decayMultiplier *= 1.1;
+            decayMultiplier *= 0.9;
         }
         if(decayMultiplier > 1){
             decayMultiplier = 1.0;
@@ -144,10 +161,10 @@ public class StrategyHandler extends Player{
         if(decayMultiplier < 0.1){
             decayMultiplier = 0.1;
         }
-    
     }
     
-    /** Lisää strategialistaan annetun strategian.
+    /** 
+     * Lisää strategialistaan annetun strategian.
      * @param s 
      */
     public void addStrategy(Strategy s){

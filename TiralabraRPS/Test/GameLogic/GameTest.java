@@ -59,7 +59,7 @@ public class GameTest {
     public void checkWinnersUpdatesScoresWhenPlayerWins() {
         game.setSettings();
         for (int i = 0; i < 10; i++) {
-            game.checkWinners(0, 1);
+            game.checkResults(0, 1);
         }
         assertEquals(10, Statistics.roundStats[0]);
     }
@@ -68,7 +68,7 @@ public class GameTest {
     public void checkWinnersUpdatesScoresWhenAiWins() {
         game.setSettings();
         for (int i = 0; i < 10; i++) {
-            game.checkWinners(2, 1);
+            game.checkResults(2, 1);
         }
         assertEquals(10, Statistics.roundStats[2]);
     }
@@ -77,7 +77,7 @@ public class GameTest {
     public void checkWinnersDoesntGivePointsForLosing() {
         game.setSettings();
         for (int i = 0; i < 10; i++) {
-            game.checkWinners(1, 0);
+            game.checkResults(1, 0);
         }
         assertEquals(0, Statistics.roundStats[0]);
     }
@@ -86,9 +86,9 @@ public class GameTest {
     public void checkWinnersCountsDraws() {
         game.setSettings();
         for (int i = 0; i < 10; i++) {
-            game.checkWinners(1, 1);
-            game.checkWinners(0, 0);
-            game.checkWinners(2, 2);
+            game.checkResults(1, 1);
+            game.checkResults(0, 0);
+            game.checkResults(2, 2);
         }
         assertEquals(30, Statistics.roundStats[1]);
     }

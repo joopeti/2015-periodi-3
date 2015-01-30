@@ -31,7 +31,6 @@ public class MarkovFirstOrder extends Strategy {
         rnd = new Random();
         playerFirstOrderMatrix = new double[3][3];
         aiFirstOrderMatrix = new double[3][3];
-
         setMatrix();
     }
 
@@ -44,7 +43,7 @@ public class MarkovFirstOrder extends Strategy {
      */
     @Override
     public int predictPlayerMove() {
-        double rivi[] = playerFirstOrderMatrix[Statistics.getLastPlayerMove()];
+        double rivi[] = playerFirstOrderMatrix[Statistics.getLastP1Move()];
         if (rivi[0] > rivi[1] && rivi[0] > rivi[2]) {
             return 0;
         } else if (rivi[1] > rivi[2]) {
@@ -65,8 +64,8 @@ public class MarkovFirstOrder extends Strategy {
      */
     @Override
     public int predictAiMove() {
-        printMatrix();
-        double rivi[] = aiFirstOrderMatrix[Statistics.getLastAiMove()];
+//        printMatrix();
+        double rivi[] = aiFirstOrderMatrix[Statistics.getLastP2Move()];
         if (rivi[0] > rivi[1] && rivi[0] > rivi[2]) {
             return 0;
         } else if (rivi[1] > rivi[2]) {

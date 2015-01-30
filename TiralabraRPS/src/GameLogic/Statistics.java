@@ -24,12 +24,12 @@ public class Statistics {
     /**
      * Pelaajan siirtohistoria.
      */
-    public static ArrayList<Integer> playermoves = new ArrayList();
+    public static ArrayList<Integer> p1moves = new ArrayList();
 
     /**
      *
      */
-    public static ArrayList<Integer> aimoves = new ArrayList();
+    public static ArrayList<Integer> p2moves = new ArrayList();
 
     /**
      * Tekoälyn siirtohistoria.
@@ -56,8 +56,16 @@ public class Statistics {
      *
      * @return
      */
-    public static int getLastPlayerMove() {
-        return playermoves.get(playermoves.size() - 1);
+    public static int getLastP1Move() {
+        return p1moves.get(p1moves.size() - 1);
+    }
+    
+    public static int getLastOpponentMove(int id){
+        if(id == 0){
+            return getLastP2Move();
+        } else{
+            return getLastP1Move();
+        }
     }
 
     /**
@@ -65,8 +73,8 @@ public class Statistics {
      *
      * @return
      */
-    public static int getLastAiMove() {
-        return aimoves.get(aimoves.size() - 1);
+    public static int getLastP2Move() {
+        return p2moves.get(p2moves.size() - 1);
     }
 
     /**
@@ -76,8 +84,8 @@ public class Statistics {
      * @param ai
      */
     public void updatePlayerAndAiMoves(int player, int ai) {
-        playermoves.add(player);
-        aimoves.add(ai);
+        p1moves.add(player);
+        p2moves.add(ai);
     }
 
     /**
@@ -109,7 +117,7 @@ public class Statistics {
      * @return
      */
     public static int[] getLastTwoPlayerMoves() {
-        int[] moves = new int[]{playermoves.get(playermoves.size() - 2), playermoves.get(playermoves.size() - 1)};
+        int[] moves = new int[]{p1moves.get(p1moves.size() - 2), p1moves.get(p1moves.size() - 1)};
         return moves;
     }
 
@@ -119,7 +127,7 @@ public class Statistics {
      * @return
      */
     public static int[] getLastTwoAiMoves() {
-        int[] moves = new int[]{aimoves.get(aimoves.size() - 2), aimoves.get(aimoves.size() - 1)};
+        int[] moves = new int[]{p2moves.get(p2moves.size() - 2), p2moves.get(p2moves.size() - 1)};
         return moves;
     }
 
@@ -127,8 +135,8 @@ public class Statistics {
      * Palauttaa pelin tilastot oletusarvoisiksi.
      */
     public void resetStats() {
-        playermoves.clear();
-        aimoves.clear();
+        p1moves.clear();
+        p2moves.clear();
         roundStats = new int[]{0, 0, 0};
         round = 1;
     }
@@ -138,8 +146,8 @@ public class Statistics {
      *
      */
     public void showMoveHistory() {
-        System.out.println("Pelaaja: " + playermoves);
-        System.out.println("Tekoäly: " + aimoves);
+        System.out.println("Pelaaja: " + p1moves);
+        System.out.println("Tekoäly: " + p2moves);
     }
 
     public void setWinner(int tulos) {
@@ -153,11 +161,11 @@ public class Statistics {
             FileWriter fw = new FileWriter(file, true);
             pw = new PrintWriter(fw);
             pw.println("stats: ");
-            for (Integer playermove : playermoves) {
+            for (Integer playermove : p1moves) {
                 pw.print(playermove + " ");
             }
             pw.println();
-            for (Integer aimove : aimoves) {
+            for (Integer aimove : p2moves) {
                 pw.print(aimove + " ");
             }
             pw.println();
@@ -171,5 +179,8 @@ public class Statistics {
     public void printStatistics() {
         System.out.print("Voittoprosentti: ");
         System.out.printf("%2.2f", (double)roundStats[0] / (round - roundStats[1]));
+        System.out.println("");
+        System.out.println(p1moves);
+        System.out.println(p2moves);
     }
 }

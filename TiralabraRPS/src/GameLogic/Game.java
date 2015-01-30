@@ -28,16 +28,21 @@ public class Game {
      */
     public boolean running;
     private TextUI ui;
-    private StrategyHandler ai;
     private Statistics st;
+    Player p1;
+    Player p2;
 
     /** Alustaa käyttöliittymän ja tekoälyn.
      */
     public Game() {
         this.ui = new TextUI();
-        this.ai = new StrategyHandler();
         this.st = new Statistics();
         kadet = new Hand[]{kasi.Kivi, kasi.Sakset, kasi.Paperi};
+        p1 = new StrategyHandler(0, 6, 0.95);
+        p2 = new StrategyHandler(2, 3, 0.95);
+        p1.addStrategy(new MarkovFirstOrder());
+        p2.addStrategy(new MarkovFirstOrder());
+        
         running = false;
     }
 
@@ -47,7 +52,6 @@ public class Game {
 //        this.gamemode = ui.askGameMode();
 //        this.players = ui.askPlayers();
         running = true;
-        ai.addStrategy(new MarkovFirstOrder());
         Statistics.round = 1;
     }
 
@@ -58,20 +62,19 @@ public class Game {
      * @param AI
      */
     public void playRound(int player, int AI) {
-        if (player == -1) {
+        if (player == -1 || Statistics.round > 50) {
             running = false;
-        } else {
-            checkWinners(player, AI);
-            st.updatePlayerAndAiMoves(player, AI);
-            ai.updateMetaScores();
-            ai.updateMetaChoices();
-//            ai.printMetascores();
-//            ai.printMetaChoices();
-//            ai.printDecay();
-            st.showMoveHistory();
             ui.showResults(Statistics.round, st.getRoundStatistics(), kadet[player], kadet[AI], tulos);
+//            p1.printMetascores();
+//            p1.printMetaChoices();
+//            p1.printDecay();
+        } else {
+            checkResults(player, AI);
+            st.updatePlayerAndAiMoves(player, AI);
+            p1.afterRoundUpdate();
+            p2.afterRoundUpdate();
+//            st.showMoveHistory();
             st.roundIncrement();
-            ai.updateStrategiesAfterRound();
         }
     }
 
@@ -80,7 +83,7 @@ public class Game {
      * @param pelaaja
      * @param tekoaly
      */
-    public void checkWinners(int pelaaja, int tekoaly) {
+    public void checkResults(int pelaaja, int tekoaly) {
         if (pelaaja == tekoaly) {
             st.updateRoundStatistics(1);
             tulos = "TASAPELI";
@@ -99,9 +102,9 @@ public class Game {
     public void start() {
         setSettings();
         while (running) {
-            int choice = ui.chooseHand();
-                
-            playRound(choice - 1, ai.chooseHand(ui));
+            int a = p1.chooseHand(ui);
+            int b = p2.chooseHand(ui);
+            playRound(a, b);
         }
         st.printStatistics();
         st.saveGameStatsToFile();
