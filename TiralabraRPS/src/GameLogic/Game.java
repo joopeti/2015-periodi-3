@@ -5,34 +5,42 @@ import Utils.Hand;
 import UI.*;
 
 /**
- * Game Sisältää pelilogiikan, tarkistaa pisteet ja hoitaa kommunikaation tekoälyn, pelaajan ja käyttöliittymän välillä.
- * 
+ * Game Sisältää pelilogiikan, tarkistaa pisteet ja hoitaa kommunikaation
+ * tekoälyn, pelaajan ja käyttöliittymän välillä.
+ *
  */
 public class Game {
 
     private Hand kasi;
     private Hand[] kadet;
-    /** Valittu pelimoodi. Ei vielä käytössä.
+    /**
+     * Valittu pelimoodi. Ei vielä käytössä.
      */
     public int gamemode;
-    /** Valittu pelaajamäärä. Ei vielä käytössä.
+    /**
+     * Valittu pelaajamäärä. Ei vielä käytössä.
      */
     public int players;
-    /** Kierrolaskuri.
+    /**
+     * Kierrolaskuri.
      */
     public int turn;
-    /** Merkkijono joka kertoo pelaajalle edellisen kierroksen tuloksen.
+    /**
+     * Merkkijono joka kertoo pelaajalle edellisen kierroksen tuloksen.
      */
     public String tulos;
-    /** Kertoo onko peli vielä käynnissä, vai lopettiko pelaaja pelaamisen.
+    /**
+     * Kertoo onko peli vielä käynnissä, vai lopettiko pelaaja pelaamisen.
      */
     public boolean running;
     private TextUI ui;
     private Statistics st;
     Player p1;
     Player p2;
+    private boolean debug;
 
-    /** Alustaa käyttöliittymän ja tekoälyn.
+    /**
+     * Alustaa käyttöliittymän ja tekoälyn.
      */
     public Game() {
         this.ui = new TextUI();
@@ -41,25 +49,30 @@ public class Game {
 //        p1 = new StrategyHandler(0, 3, 0.95, false);
         p1 = new Player();
         p2 = new StrategyHandler(2, 1, 0.95, true);
-//        p1.addStrategy(new MarkovSecondOrder());
+//        p1.addStrategy(new MarkovFirstOrder());
 //        p1.addStrategy(new MarkovSecondOrder());
         p2.addStrategy(new MarkovSecondOrder());
-        p2.addStrategy(new MarkovFirstOrder());
+//        p2.addStrategy(new MarkovFirstOrder());
 //        p2.addStrategy(new StupidAi());
         running = false;
     }
 
-    /** Kysyy pelaajalta pelin asetukset ennen peliä ja laittaa pelin pyörimään sen jälkeen.
+    /**
+     * Kysyy pelaajalta pelin asetukset ennen peliä ja laittaa pelin pyörimään
+     * sen jälkeen.
      */
     public void setSettings() {
 //        this.gamemode = ui.askGameMode();
 //        this.players = ui.askPlayers();
         running = true;
+        debug = true;
         Statistics.round = 1;
     }
 
-    /** Ottaa pelaajan ja tekoälyn valitsemat kädet ja laskee kierroksen tuloksen ja näyttää sen käyttöliittymän kautta.
-     * Sisältää tällä hetkellä täysin turhaan tekoälyn metodikustuja.
+    /**
+     * Ottaa pelaajan ja tekoälyn valitsemat kädet ja laskee kierroksen tuloksen
+     * ja näyttää sen käyttöliittymän kautta. Sisältää tällä hetkellä täysin
+     * turhaan tekoälyn metodikustuja.
      *
      * @param player
      * @param AI
@@ -70,23 +83,24 @@ public class Game {
             ui.showResults(Statistics.round, st.getRoundStatistics(), kadet[0], kadet[0], tulos);
             p1.printMetascores();
             p2.printMetascores();
-//            p1.printMetascores();
-//            p1.printMetaChoices();
-//            p1.printDecay();
         } else {
             checkResults(player, AI);
-            p2.printMetascores();
-            ui.showResults(Statistics.round, st.getRoundStatistics(), kadet[player], kadet[AI], tulos);
+            if (debug) {
+                ui.showResults(Statistics.round, st.getRoundStatistics(), kadet[player], kadet[AI], tulos);
+                p2.printMetascores();
+                st.showMoveHistory();
+            }
             st.updatePlayerAndAiMoves(player, AI);
             p1.afterRoundUpdate();
             p2.afterRoundUpdate();
-            st.showMoveHistory();
             st.roundIncrement();
         }
     }
 
-    /** Laskee pisteet kierrokselta ja tallentaa ne pisteet-taulukkoon.
-     * Valitsee oikean tuloksen näytettäväksi pelaajalle.
+    /**
+     * Laskee pisteet kierrokselta ja tallentaa ne pisteet-taulukkoon. Valitsee
+     * oikean tuloksen näytettäväksi pelaajalle.
+     *
      * @param pelaaja
      * @param tekoaly
      */
@@ -103,8 +117,9 @@ public class Game {
         }
     }
 
-    /** Käynnistää pelin. 
-     * Aluksi kysytään asetukset, jonka jälkeen pelaajalta ja tekoälyltä kysytään kädet ja annetaan ne playround-metodille.
+    /**
+     * Käynnistää pelin. Aluksi kysytään asetukset, jonka jälkeen pelaajalta ja
+     * tekoälyltä kysytään kädet ja annetaan ne playround-metodille.
      */
     public void start() {
         setSettings();

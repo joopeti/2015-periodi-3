@@ -11,18 +11,18 @@ import java.util.Random;
  * Pisteyttää eri strategiat ja palauttaa parhaan strategian ehdottaman käden.
  * Huolehtii strategioiden päivittämisestä.
  */
-public class StrategyHandler extends Player{
+public class StrategyHandler extends Player {
 
     /**
      * Metastrategioiden pistetytys ja valintalistat.
      */
-    private double[][] stratPerformance;
-    private int[][] stratChoice;
-    private int numStrat;
-    private int numMeta;
+    public double[][] stratPerformance;
+    public int[][] stratChoice;
+    public int numStrat;
+    public int numMeta;
     private double decayMultiplier;
     private boolean decayOn;
-    
+
     private Random rnd;
     private int id;
 
@@ -60,12 +60,15 @@ public class StrategyHandler extends Player{
             return rnd.nextInt(3);
         }
     }
+
     /**
-     * 
+     * Päivittää kierroksen jälkeen metastrategioiden pisteytyksen,
+     * strategioiden sisäiset mallit ja niiden perusteella päivittää
+     * metastrategioiden käsivalinnat.
      */
-        
+
     @Override
-    public void afterRoundUpdate(){
+    public void afterRoundUpdate() {
         updateMetaScores();
         updateAllStrategyModels();
         updateMetaChoices();
@@ -80,22 +83,23 @@ public class StrategyHandler extends Player{
         for (int i = 0; i < numStrat; i++) {
             int prediction = strategies.get(i).predictPlayerMove();
             int counter = strategies.get(i).predictAiMove();
-            if(this.id == 0){
-                int tmp = prediction;
+            if (this.id == 0) {           //Jos ai:n id on 0, niin prediction ja counter muuttujat vaihdetaan keskenään.
+                int tmp = prediction;   //Tämä mahdollistaa ai vs ai-pelit kun ai tietää kumpi malli on vastustaja.           
                 prediction = counter;
                 counter = tmp;
             }
-            stratChoice[i][0] = wins[prediction];
-            stratChoice[i][1] = prediction;
-            stratChoice[i][2] = wins[stratChoice[i][0]];
-            stratChoice[i][3] = wins[wins[counter]];
-            stratChoice[i][4] = wins[wins[stratChoice[i][3]]];
+            stratChoice[i][0] = wins[prediction];           //Voittaa pelaajan todennäköisimmän käden.
+            stratChoice[i][1] = prediction;                 //Voittaa pelaajan, jos pelaaja tietää että käytetään strategiaa.
+            stratChoice[i][2] = wins[stratChoice[i][0]];    //Voittaa pelaajan, jos pelaaja tietää, että ai tietää, että pelaaja tietää, että käytetään strategiaa.
+            stratChoice[i][3] = wins[wins[counter]];        //Voittaa pelaajan, jos pelaaja käyttää strategiaa ai:ta vastaan.
+            stratChoice[i][4] = wins[wins[stratChoice[i][3]]];//Jne..
             stratChoice[i][5] = wins[wins[stratChoice[i][4]]];
         }
     }
 
-    /** 
+    /**
      * Palauttaa parhaan metastrategian ehdottaman käden.
+     *
      * @return
      */
     public int getBestChoice() {
@@ -112,16 +116,17 @@ public class StrategyHandler extends Player{
         return bestChoice;
     }
 
-    /**  
-     * Päivittää decay-arvon ja pyytää jokaista strategiaa päivittämään omat tietonsa
-     * ja mahdollisesti kertomaan ne decay:llä.
+    /**
+     * Päivittää decay-arvon ja pyytää jokaista strategiaa päivittämään omat
+     * tietonsa ja mahdollisesti kertomaan ne decay:llä.
      */
     public void updateAllStrategyModels() {
-        if(decayOn) 
+        if (decayOn) {
             updateMultiplier();
+        }
         for (Strategy strat : strategies) {
-            if(Statistics.round >= strat.getFirstRoundToUpdateModels()){
-            strat.updateModels(decayMultiplier);
+            if (Statistics.round >= strat.getFirstRoundToUpdateModels()) {
+                strat.updateModels(decayMultiplier);
             }
         }
     }
@@ -146,32 +151,34 @@ public class StrategyHandler extends Player{
             }
         }
     }
-    
-    /** 
+
+    /**
      * Päivittää decay-kerrointa viime tuloksen perusteella.
+     * Häviö pienentää kerrointa ja voitto kasvattaa.
+     * Mitä pienempi kerroin sitä nopeammin vanhat strategiapisteytykset häviävät "muistista"
      */
-    public void updateMultiplier(){
-        if(id == Statistics.winner){
+    public void updateMultiplier() {
+        if (id == Statistics.winner) {
             decayMultiplier *= 1.1;
-        } else if(Statistics.winner == 1){
+        } else if (Statistics.winner == 1) {
             decayMultiplier *= 0.95;
-        } else{
+        } else {
             decayMultiplier *= 0.9;
         }
-        if(decayMultiplier > 1){
+        if (decayMultiplier > 1) {
             decayMultiplier = 1.0;
         }
-        if(decayMultiplier < 0.1){
+        if (decayMultiplier < 0.1) {
             decayMultiplier = 0.1;
         }
     }
-    
-    /** 
-     * Lisää strategialistaan annetun strategian.
-     * @param s 
+
+    /**
+     * Lisää strategialistaan annetun strategian ja lisää kokonaistrategioiden määrään yhden.
+     * @param s
      */
     @Override
-    public void addStrategy(Strategy s){
+    public void addStrategy(Strategy s) {
         strategies.add(s);
         numStrat++;
     }
@@ -194,7 +201,6 @@ public class StrategyHandler extends Player{
     /**
      * Tulostaa Metastrategioiden valitseman käden.
      */
-
     public void printMetaChoices() {
         System.out.print("");
         for (int i = 0; i < 3; i++) {
@@ -205,8 +211,8 @@ public class StrategyHandler extends Player{
             System.out.println("");
         }
     }
-    
-    public void printDecay(){
+
+    public void printDecay() {
         System.out.printf("%2.2f", decayMultiplier);
         System.out.println("");
     }
