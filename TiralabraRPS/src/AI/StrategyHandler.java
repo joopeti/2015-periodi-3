@@ -20,7 +20,7 @@ public class StrategyHandler extends Player {
     public int[][] stratChoice;
     public int numStrat;
     public int numMeta;
-    private double decayMultiplier;
+    public double decayMultiplier;
     private boolean decayOn;
 
     private Random rnd;
