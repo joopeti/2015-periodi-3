@@ -29,24 +29,12 @@ public class StrategyHandlerTest {
 
     @Before
     public void setUp() {
-//        Statistics.p1moves.add(0);
-//        Statistics.p2moves.add(2);
-//        Statistics.winner = 0;
         Statistics.p1moves.add(0);
         Statistics.p2moves.add(2);
         Statistics.p1moves.add(2);
         Statistics.p2moves.add(1);
         st.stratChoice = new int[][]{{1, 2, 1, 2, 1, 2}, {0, 1, 2, 0, 1, 2}, {2, 1, 0, 2, 1, 0}};
         st.stratPerformance = new double[][]{{3, 2, 1, 0, 1, 2}, {0, 1, 2, 2, 3, 2,}, {6, 2, 2, 1, 1, 0}};
-//        Statistics.p1moves.add(0);
-//        Statistics.p2moves.add(2);
-//        st.afterRoundUpdate();
-//        Statistics.winner = 0;
-//        Statistics.p1moves.add(2);
-//        Statistics.p2moves.add(1);
-//        st.afterRoundUpdate();
-//        Statistics.winner = 2;
-//        Statistics.round = 3;
     }
 
     @Test
@@ -56,10 +44,10 @@ public class StrategyHandlerTest {
     }
 
     @Test
-    public void chooseHandGivesBestHandAfterTwoRounds() {
-//        st.addStrategy(mk);
-//        st.addStrategy(mk);
-//        st.addStrategy(mk);
+    public void chooseHandReturnsBestHandAfterTwoRounds() {
+        st.addStrategy(mk);
+        st.addStrategy(mk);
+        st.addStrategy(mk);
 
 //        Statistics.winner = 2;
 //        st.afterRoundUpdate();
@@ -71,8 +59,8 @@ public class StrategyHandlerTest {
 //        Statistics.p2moves.add(1);
 //        st.afterRoundUpdate();
 //        Statistics.winner = 2;
-//        Statistics.round = 3;
-//        assertEquals(2, st.getBestChoice());
+        Statistics.round = 3;
+        assertEquals(2, st.getBestChoice());
     }
 
     @Test
@@ -109,6 +97,7 @@ public class StrategyHandlerTest {
 
     @Test
     public void metaScoresAreIncrementedAfterWinningChoice() {
+        st.addStrategy(mk);
         st.updateMetaScores();
         System.out.println(st.stratPerformance[0][0]);
         assertTrue(2.0 == st.stratPerformance[0][0]);
@@ -116,29 +105,32 @@ public class StrategyHandlerTest {
 
     @Test
     public void metaScoresAreDecrementedAfterLosingChoice() {
+        st.addStrategy(mk);
+        st.addStrategy(mk);
         st.updateMetaScores();
         System.out.println(st.stratPerformance[1][0]);
-        assertTrue(1.0 == st.stratPerformance[1][0]);
-    }
-
-    @Test
-    public void metaScoresAreMultipliedWithDecayAfterUpdatingScores() {
-
+        assertTrue(-0.5 == st.stratPerformance[1][0]);
     }
 
     @Test
     public void decayMultiplierIsIncreasedAfterWin() {
-
+        st.decayMultiplier = 0.5;
+        Statistics.winner = 2;
+        st.updateMultiplier();
+        assertTrue(0.55 == st.decayMultiplier);
     }
 
     @Test
     public void decayMultiplierIsDecreasedAfterLoss() {
-
+        st.decayMultiplier = 0.5;
+        Statistics.winner = 0;
+        st.updateMultiplier();
+        assertTrue(0.45 == st.decayMultiplier);
     }
 
     @Test
     public void addingStrategyCreatesMetaScoreArraysToo() {
-
+        
     }
 
 }

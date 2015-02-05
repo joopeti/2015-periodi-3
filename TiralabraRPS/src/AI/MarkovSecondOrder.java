@@ -21,6 +21,12 @@ public class MarkovSecondOrder extends Strategy {
         rnd = new Random();
     }
 
+    /**
+     * Metodi palauttaa p1-matriisista suurimman luvun annetulta riviltä
+     * (p1_lastmove, p2_lastmove). Jos suurinta lukua ei ole, palautetaan
+     * satunnainen luku.
+     * @return
+     */
     @Override
     public int predictPlayerMove() {
         double rivi[] = p1matrix[Statistics.getLastP1Move()][Statistics.getLastP2Move()];
@@ -35,6 +41,12 @@ public class MarkovSecondOrder extends Strategy {
         }
     }
 
+    /**
+     * Metodi palauttaa p2-matriisista suurimman luvun annetulta riviltä
+     * (p1_lastmove, p2_lastmove). Jos suurinta lukua ei ole, palautetaan
+     * satunnainen luku.
+     * @return
+     */
     @Override
     public int predictAiMove() {
         double rivi[] = p2matrix[Statistics.getLastP1Move()][Statistics.getLastP2Move()];
@@ -50,7 +62,8 @@ public class MarkovSecondOrder extends Strategy {
     }
 
     /**
-     * Päivittää matriisit.
+     * Päivittää matriisit. Rivi valitaan viime kierroksen p1 ja p2-käsien
+     * osoittamasta rivistä ja päivitetään seuraavalla kierroksella pelatulla
      *
      * @param decay
      */
@@ -92,6 +105,10 @@ public class MarkovSecondOrder extends Strategy {
         }
     }
 
+    /**
+     * Palauttaa sen kierroksen numeron, jonka jälkeen matriiseja voidaan alkaa päivittää.
+     * @return 
+     */
     @Override
     public int getFirstRoundToUpdateModels() {
         return 3;

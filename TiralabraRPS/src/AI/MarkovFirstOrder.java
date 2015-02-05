@@ -34,7 +34,7 @@ public class MarkovFirstOrder extends Strategy {
     }
 
     /**
-     * Metodi tarkistaa annetusta matriisista suurimman luvun annetulta riviltä
+     * Metodi tarkistaa pelaajan matriisista suurimman luvun annetulta riviltä
      * (= lastmove) ja palauttaa sen. Jos suurinta lukua ei ole, palautetaan
      * satunnainen luku.
      *
@@ -55,7 +55,7 @@ public class MarkovFirstOrder extends Strategy {
     }
 
     /**
-     * Metodi tarkistaa annetusta matriisista suurimman luvun annetulta riviltä
+     * Metodi tarkistaa tekoälyn matriisista suurimman luvun annetulta riviltä
      * (= lastmove) ja palauttaa sen. Jos suurinta lukua ei ole, palautetaan
      * satunnainen luku.
      *
