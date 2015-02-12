@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import Utils.Lista;
 
 /**
  *
@@ -20,12 +21,14 @@ public class Statistics {
     /**
      * Pelaajan siirtohistoria.
      */
-    public static ArrayList<Integer> p1moves = new ArrayList();
+//    public static ArrayList<Integer> p1moves = new ArrayList();
+        public static Lista<Integer> p1moves = new Lista();
 
     /**
      *
      */
-    public static ArrayList<Integer> p2moves = new ArrayList();
+    public static Lista<Integer> p2moves = new Lista();
+//        public static ArrayList<Integer> p2moves = new ArrayList();
 
     /**
      * Tekoälyn siirtohistoria.
@@ -157,15 +160,15 @@ public class Statistics {
             FileWriter fw = new FileWriter(file, true);
             pw = new PrintWriter(fw);
             pw.println("stats: ");
-            for (Integer playermove : p1moves) {
-                pw.print(playermove + " ");
-            }
-            pw.println();
-            for (Integer aimove : p2moves) {
-                pw.print(aimove + " ");
-            }
-            pw.println();
-            pw.close();
+//            for (Integer playermove : p1moves) {
+//                pw.print(playermove + " ");
+//            }
+//            pw.println();
+//            for (Integer aimove : p2moves) {
+//                pw.print(aimove + " ");
+//            }
+//            pw.println();
+//            pw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -176,7 +179,7 @@ public class Statistics {
         System.out.print("Voittoprosentti: ");
         System.out.printf("%2.2f", (double)roundStats[0] / (round - roundStats[1]));
         System.out.println("");
-        System.out.println(p1moves);
-        System.out.println(p2moves);
+//        System.out.println(p1moves);
+//        System.out.println(p2moves);
     }
 }
