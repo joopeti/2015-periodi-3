@@ -1,5 +1,6 @@
 package GameLogic;
 
+import AI.RandomAi;
 import AI.*;
 import Utils.Hand;
 import UI.*;
@@ -40,17 +41,17 @@ public class Game {
     private boolean debug;
 
     /**
-     * Alustaa käyttöliittymän ja tekoälyn.
+     * Alustaa käyttöliittymän, tilastoluokan ja pelaajat (tekoäly tai ihminen).
      */
     public Game() {
         this.ui = new TextUI();
         this.st = new Statistics();
         kadet = new Hand[]{kasi.Kivi, kasi.Sakset, kasi.Paperi};
 //        p1 = new StrategyHandler(0, 3, 0.95, false);
+//        p1 = new TestPlayer();
         p1 = new Player();
-        p2 = new StrategyHandler(2, 1, 0.95, true);
-//        p1.addStrategy(new MarkovFirstOrder());
-//        p1.addStrategy(new MarkovSecondOrder());
+        p2 = new StrategyHandler(2, 3, 0.95, true);
+//        p2.addStrategy(new RandomAi());
         p2.addStrategy(new MarkovSecondOrder());
 //        p2.addStrategy(new MarkovFirstOrder());
 //        p2.addStrategy(new StupidAi());
@@ -78,17 +79,12 @@ public class Game {
      * @param AI
      */
     public void playRound(int player, int AI) {
-        if (player == -1 || Statistics.round > 100) {
-            running = false;
-            ui.showResults(Statistics.round, st.getRoundStatistics(), kadet[0], kadet[0], tulos);
-            p1.printMetascores();
-            p2.printMetascores();
+        if (player == -1 || Statistics.round > 65) {
+            endGame();
         } else {
             checkResults(player, AI);
             if (debug) {
-                ui.showResults(Statistics.round, st.getRoundStatistics(), kadet[player], kadet[AI], tulos);
-                p2.printMetascores();
-                st.showMoveHistory();
+                printDebug(player, AI);
             }
             st.updatePlayerAndAiMoves(player, AI);
             p1.afterRoundUpdate();
@@ -98,8 +94,8 @@ public class Game {
     }
 
     /**
-     * Laskee pisteet kierrokselta ja tallentaa ne pisteet-taulukkoon. Valitsee
-     * oikean tuloksen näytettäväksi pelaajalle.
+     * Tarkistaa kuka voitti kierroksen ja päivittää tulokset tilastot-luokkaan.
+     * Valitsee oikean tuloksen näytettäväksi pelaajalle.
      *
      * @param pelaaja
      * @param tekoaly
@@ -129,6 +125,19 @@ public class Game {
             playRound(a, b);
         }
         st.printStatistics();
-        st.saveGameStatsToFile();
+//        st.saveGameStatsToFile();
+    }
+
+    public void endGame() {
+        running = false;
+        ui.showResults(Statistics.round, st.getRoundStatistics(), kadet[0], kadet[0], tulos);
+        p1.printMetascores();
+        p2.printMetascores();
+    }
+
+    public void printDebug(int player, int ai) {
+        ui.showResults(Statistics.round, st.getRoundStatistics(), kadet[player], kadet[ai], tulos);
+        p2.printMetascores();
+        st.showMoveHistory();
     }
 }

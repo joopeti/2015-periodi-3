@@ -6,33 +6,31 @@
 package AI;
 
 import AI.Strategy;
-import GameLogic.Statistics;
+import java.util.Random;
 
 /**
- *
- * @author joopeti
+ * Palauttaa satunnaisen luvun.
  */
-public class StupidAi extends Strategy{
-    public int[] wins = new int[]{2, 0, 1};
-    
+public class RandomAi extends Strategy{
+    Random rnd = new Random();
     @Override
     public int predictPlayerMove() {
-        return wins[Statistics.getLastP1Move()];
+        return rnd.nextInt(3);
     }
 
     @Override
     public int predictAiMove() {
-        return wins[Statistics.getLastP2Move()];
+        return rnd.nextInt(3);
     }
 
     @Override
     public void updateModels(double decay) {
-        // Rollseyes...
+        
     }
 
     @Override
     public int getFirstRoundToUpdateModels() {
-        return 2;
+        return 1;
     }
     
 }

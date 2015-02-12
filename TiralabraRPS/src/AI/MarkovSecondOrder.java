@@ -1,5 +1,6 @@
 package AI;
 
+import AI.Strategy;
 import GameLogic.Statistics;
 import java.util.Random;
 

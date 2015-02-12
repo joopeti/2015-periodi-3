@@ -57,7 +57,8 @@ public class StrategyHandler extends Player {
         if (Statistics.round > 2) {
             return getBestChoice();
         } else {
-            return rnd.nextInt(3);
+//            return rnd.nextInt(3);
+            return 1;
         }
     }
 
@@ -99,7 +100,6 @@ public class StrategyHandler extends Player {
 
     /**
      * Palauttaa parhaan metastrategian ehdottaman käden.
-     *
      * @return
      */
     public int getBestChoice() {
