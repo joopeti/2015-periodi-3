@@ -47,18 +47,18 @@ public class Game {
         this.ui = new TextUI();
         this.st = new Statistics();
         kadet = new Hand[]{kasi.Kivi, kasi.Sakset, kasi.Paperi};
-        p1 = new StrategyHandler(0, 1, 0.95, false);
+//        p1 = new StrategyHandler(0, 3, 0.95, false);
 //            p1.addStrategy(new MarkovSecondOrder());
 //            p1.addStrategy(new MarkovFirstOrder());
 //            p1.addStrategy(new StupidAi());
-            p1.addStrategy(new RandomAi());
-//        p1 = new TestPlayer();
+//            p1.addStrategy(new RandomAi());
+        p1 = new TestPlayer();
 //        p1 = new Player();
 
         p2 = new StrategyHandler(2, 1, 0.95, false);
-//        p2.addStrategy(new RandomAi());
-
-        p2.addStrategy(new MarkovFirstOrder());
+            p2.addStrategy(new MarkovFirstOrder());
+            p2.addStrategy(new MarkovSecondOrder());
+//            p2.addStrategy(new StupidAi());
         running = false;
     }
 
@@ -70,7 +70,7 @@ public class Game {
 //        this.gamemode = ui.askGameMode();
 //        this.players = ui.askPlayers();
         running = true;
-        debug = false;
+        debug = true;
         Statistics.round = 1;
     }
 
@@ -83,7 +83,7 @@ public class Game {
      * @param AI
      */
     public void playRound(int player, int AI) {
-        if (player == -1 || Statistics.round > 1000000) {
+        if (player == -1 || Statistics.round > 60) {
             endGame();
         } else {
             checkResults(player, AI);
@@ -118,8 +118,8 @@ public class Game {
     }
 
     /**
-     * Käynnistää pelin. Aluksi kysytään asetukset, jonka jälkeen pelaajalta ja
-     * tekoälyltä kysytään kädet ja annetaan ne playround-metodille.
+     * Käynnistää pelin. Aluksi kysytään asetukset, jonka jälkeen pelaaja 1:ltä ja
+     * pelaaja 2:lta kysytään kädet ja annetaan ne playround-metodille.
      */
     public void start() {
         setSettings();

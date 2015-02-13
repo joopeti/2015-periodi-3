@@ -49,16 +49,6 @@ public class StrategyHandlerTest {
         st.addStrategy(mk);
         st.addStrategy(mk);
 
-//        Statistics.winner = 2;
-//        st.afterRoundUpdate();
-//        Statistics.p1moves.add(0);
-//        Statistics.p2moves.add(2);
-//        st.afterRoundUpdate();
-//        Statistics.winner = 0;
-//        Statistics.p1moves.add(2);
-//        Statistics.p2moves.add(1);
-//        st.afterRoundUpdate();
-//        Statistics.winner = 2;
         Statistics.round = 3;
         assertEquals(2, st.getBestChoice());
     }
