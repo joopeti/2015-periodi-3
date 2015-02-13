@@ -11,8 +11,8 @@ import java.util.Random;
  */
 public class MarkovSecondOrder extends Strategy {
 
-    private double[][][] p1matrix;
-    private double[][][] p2matrix;
+    public double[][][] p1matrix;
+    public double[][][] p2matrix;
     private Random rnd;
 
     public MarkovSecondOrder() {

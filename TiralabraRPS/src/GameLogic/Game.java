@@ -52,13 +52,13 @@ public class Game {
 //            p1.addStrategy(new MarkovFirstOrder());
 //            p1.addStrategy(new StupidAi());
 //            p1.addStrategy(new RandomAi());
-        p1 = new TestPlayer();
-//        p1 = new Player();
+//        p1 = new TestPlayer();
+        p1 = new Player();
 
-        p2 = new StrategyHandler(2, 1, 0.95, false);
+        p2 = new StrategyHandler(2, 3, 0.95, false);
             p2.addStrategy(new MarkovFirstOrder());
             p2.addStrategy(new MarkovSecondOrder());
-//            p2.addStrategy(new StupidAi());
+            p2.addStrategy(new StupidAi());
         running = false;
     }
 

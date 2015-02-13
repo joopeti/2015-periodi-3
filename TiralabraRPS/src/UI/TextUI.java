@@ -28,16 +28,17 @@ public class TextUI {
      *
      * @param round
      * @param results
-     * @param player
-     * @param ai
+     * @param p1
+     * @param p2
      * @param tulos
      * @return
      */
-    public boolean showResults(int round, int[] results, Hand player, Hand ai, String tulos){
+    public boolean showResults(int round, int[] results, Hand p1, Hand p2, String tulos){
         System.out.println("/****** Round " + round + ". *******/");
 //        System.out.println("*" + historia.toString() + "*");
+        System.out.println(p1.toString(1));
         System.out.println(tulos);
-        System.out.println(player + " VS " + ai);
+        System.out.println(p2.toString(2));
         System.out.println("Voitot: " + results[0] + ", Tasapelit: " + results[1] + ", Häviöt: " + results[2]);
         return true;
     }
