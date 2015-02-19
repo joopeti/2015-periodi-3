@@ -52,7 +52,7 @@ public class TextUI {
         System.out.println("/************************/");
         System.out.println("Valitse pelimoodi: ");
         System.out.println("(1) pelaaja vs tekoäly");
-        System.out.println("(2) tekoäly vs tekoäly");
+        System.out.println("(2) tekoälyavustettu peli");
         System.out.println("(3) pelaaja vs testipelaaja??");
         String option = sc.nextLine();
         return option;

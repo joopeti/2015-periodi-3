@@ -227,7 +227,7 @@ public class Game {
     public void endGame() {
         running = false;
 //        ui.showResults(Statistics.round, st.getRoundStatistics(), kadet[0], kadet[0], tulos);
-        System.out.println("Peli loppui. ");
+        System.out.println("** Peli loppui. **");
         printDebug();
         st.printStatistics();
     }
