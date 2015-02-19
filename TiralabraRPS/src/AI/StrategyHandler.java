@@ -67,7 +67,6 @@ public class StrategyHandler extends Player {
      * strategioiden sisäiset mallit ja niiden perusteella päivittää
      * metastrategioiden käsivalinnat.
      */
-
     @Override
     public void afterRoundUpdate() {
         updateMetaScores();
@@ -100,6 +99,7 @@ public class StrategyHandler extends Player {
 
     /**
      * Palauttaa parhaan metastrategian ehdottaman käden.
+     *
      * @return
      */
     public int getBestChoice() {
@@ -153,9 +153,9 @@ public class StrategyHandler extends Player {
     }
 
     /**
-     * Päivittää decay-kerrointa viime tuloksen perusteella.
-     * Häviö pienentää kerrointa ja voitto kasvattaa.
-     * Mitä pienempi kerroin sitä nopeammin vanhat strategiapisteytykset häviävät "muistista"
+     * Päivittää decay-kerrointa viime tuloksen perusteella. Häviö pienentää
+     * kerrointa ja voitto kasvattaa. Mitä pienempi kerroin sitä nopeammin
+     * vanhat strategiapisteytykset häviävät "muistista"
      */
     public void updateMultiplier() {
         if (id == Statistics.winner) {
@@ -174,7 +174,9 @@ public class StrategyHandler extends Player {
     }
 
     /**
-     * Lisää strategialistaan annetun strategian ja lisää kokonaistrategioiden määrään yhden.
+     * Lisää strategialistaan annetun strategian ja lisää kokonaistrategioiden
+     * määrään yhden.
+     *
      * @param s
      */
     @Override

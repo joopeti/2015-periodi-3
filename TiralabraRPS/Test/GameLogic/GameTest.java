@@ -44,14 +44,14 @@ public class GameTest {
     @Test
     public void runningIsSetFalseAfterNegativeAsInput() {
         game.setSettings();
-        game.playRound(-1, 1);
+        game.playRound();
         assertEquals(false, game.running);
     }
 
     @Test
     public void turnIncrementsAfterPlayedRound() {
         game.setSettings();
-        game.playRound(1, 1);
+        game.playRound();
         assertEquals(2, Statistics.round);
     }
 

@@ -55,8 +55,16 @@ public class Game {
         this.st = new Statistics();
         kadet = new Hand[]{kasi.Kivi, kasi.Sakset, kasi.Paperi};
         p1 = new Player();
-        p2 = new StrategyHandler(2, 3, 0.95, true);
-        p2.addStrategy(new PatternMatching(5));
+//        p1 = new StrategyHandler(0, 2, 0.95, true);
+////            p1.addStrategy(new MarkovFirstOrder());
+////            p1.addStrategy(new MarkovSecondOrder());
+//            p1.addStrategy(new PatternMatching(5)); 
+//        p2 = new StrategyHandler(2, 2, 0.95, true);
+//            p2.addStrategy(new MarkovFirstOrder());
+////            p2.addStrategy(new MarkovSecondOrder());
+////            p2.addStrategy(new PatternMatching(4)); 
+//
+////        p2.addStrategy(new PatternMatching(5));
     }
 
     /**
@@ -68,7 +76,7 @@ public class Game {
         running = true;
         print = true;
         debug = false;
-        roundLimit = 50;
+        roundLimit = 1000;
         Statistics.round = 1;
     }
 
@@ -201,9 +209,9 @@ public class Game {
      */
     public void askPlayerHands() {
         p1choice = p1.chooseHand(ui);
-            if(gamemode == 2){
-                System.out.println("Tekoälyn valinta: " + kadet[p1choice]);
-            }
+        if (gamemode == 2) {
+            System.out.println("Tekoälyn valinta: " + kadet[p1choice]);
+        }
         p2choice = p2.chooseHand(ui);
     }
 
@@ -212,12 +220,12 @@ public class Game {
      * pelin ja "9" näyttää tekoälyn valintamatriisit.
      */
     public void checkInput() {
-        if (p1choice == -1 || p2choice == -1) {
-            running = false;
-        }
         while (p1choice == 9 || p2choice == 9) {
             debug = !debug;
             askPlayerHands();                        //!!!!!!!!!!!!!!!!
+        }
+        if (p1choice == -1 || p2choice == -1) {
+            running = false;
         }
     }
 
@@ -235,6 +243,6 @@ public class Game {
     public void printDebug() {
         p1.printMetascores();
         p2.printMetascores();
-        st.showMoveHistory();
+//        st.showMoveHistory();
     }
 }
