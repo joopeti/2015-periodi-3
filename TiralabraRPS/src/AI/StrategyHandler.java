@@ -57,8 +57,8 @@ public class StrategyHandler extends Player {
         if (Statistics.round > 2) {
             return getBestChoice();
         } else {
-//            return rnd.nextInt(3);
-            return 1;
+            return rnd.nextInt(3);
+//            return 1;
         }
     }
 
@@ -77,8 +77,8 @@ public class StrategyHandler extends Player {
 
     /**
      * Päivittää metastrategioiden valinnat annettujen ennustusten perusteella.
-     * Ensimmäiset kolme strategiaa tarkastelevat vain pelaajan historiaa ja
-     * jälkimmäiset kolme tekoälyn omaa pelihistoriaa.
+     * Ensimmäiset kolme strategiaa perustuvat vastapelaajan siirtoihin ja
+     * jälkimmäiset kolme pelaajan omiin siirtoihin.
      */
     public void updateMetaChoices() {
         for (int i = 0; i < numStrat; i++) {
@@ -188,7 +188,6 @@ public class StrategyHandler extends Player {
      */
     @Override
     public void printMetascores() {
-        System.out.print("[");
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 6; j++) {
                 System.out.printf("%2.1f", stratPerformance[i][j]);
@@ -202,7 +201,6 @@ public class StrategyHandler extends Player {
      * Tulostaa Metastrategioiden valitseman käden.
      */
     public void printMetaChoices() {
-        System.out.print("");
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 6; j++) {
                 System.out.print(stratChoice[i][j] + " ");

@@ -16,11 +16,12 @@ public class TextUI {
     /**
      * @return
      */
-    public int chooseHand(){
+    public String chooseHand(){
         System.out.println("/***********************/");
         System.out.println("Valitse kätesi: ");
-        System.out.println("(1)Kivi (2)Sakset (3)Paperi (0)Lopeta peli");
-        int option = sc.nextInt();
+        System.out.println("(1)Kivi (2)Sakset (3)Paperi");
+        System.out.println("(9)Näytä debug (0)lopeta peli");
+        String option = sc.nextLine();
         return option;
     }
     
@@ -34,11 +35,12 @@ public class TextUI {
      * @return
      */
     public boolean showResults(int round, int[] results, Hand p1, Hand p2, String tulos){
-        System.out.println("/****** Round " + round + ". *******/");
+        System.out.println("/******** Round " + round + ". *********/");
 //        System.out.println("*" + historia.toString() + "*");
         System.out.println(p1.toString(1));
-        System.out.println(tulos);
+        System.out.println("");
         System.out.println(p2.toString(2));
+        System.out.println("          " + tulos);
         System.out.println("Voitot: " + results[0] + ", Tasapelit: " + results[1] + ", Häviöt: " + results[2]);
         return true;
     }
@@ -46,13 +48,13 @@ public class TextUI {
     /** Palauttaa kokonaislukuna pelaajan valitseman pelitilan.
      * @return
      */
-    public int askGameMode(){
+    public String askGameMode(){
         System.out.println("/************************/");
         System.out.println("Valitse pelimoodi: ");
-        System.out.println("(1)Pelaaja vs Pelaaja");
-        System.out.println("(2)Pelaaja vs Tekoäly");
-        System.out.println("(3)Tekoäly vastaan Tekoäly");
-        int option = sc.nextInt();
+        System.out.println("(1) pelaaja vs tekoäly");
+        System.out.println("(2) tekoäly vs tekoäly");
+        System.out.println("(3) pelaaja vs testipelaaja??");
+        String option = sc.nextLine();
         return option;
     }
     
@@ -60,13 +62,13 @@ public class TextUI {
      *
      * @return
      */
-    public int askPlayers(){
-        System.out.println("Valitse pelaajamäärä: ");
-        System.out.println("(1)");
-        System.out.println("(2)");
-        System.out.println("(3)");
+    public String askDifficulty(){
+        System.out.println("Valitse vaikeustaso: ");
+        System.out.println("(1) Helppo");
+        System.out.println("(2) Keskitaso");
+        System.out.println("(3) Haastava");
         System.out.println("/************************/");
-        int option = sc.nextInt();
+        String option = sc.nextLine();
         return option;
     }
     

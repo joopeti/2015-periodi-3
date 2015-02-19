@@ -100,7 +100,7 @@ public class Lista<E> implements Iterable{
      * Tulostaa listan sisällön.
      */
     public void print(){
-    System.out.println("[");
+    System.out.print("[");
     for (int i = 0; i < size; i++) {
         System.out.print(list[i] + ", ");
     }

@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import Utils.Lista;
 
 /**
@@ -145,8 +144,10 @@ public class Statistics {
      *
      */
     public void showMoveHistory() {
-        System.out.println("Pelaaja: " + p1moves);
-        System.out.println("Tekoäly: " + p2moves);
+        System.out.print("Pelaaja: ");
+        p1moves.print();
+        System.out.print("Tekoäly: ");
+        p2moves.print();
     }
 
     public void setWinner(int tulos) {
@@ -176,6 +177,7 @@ public class Statistics {
     }
 
     public void printStatistics() {
+        System.out.println("p1-voitot: " + roundStats[0] + ", tasapelit: " + roundStats[1] + ", p2-voitot: " + roundStats[2]);
         System.out.print("Voittoprosentti: ");
         System.out.printf("%2.2f", (double)roundStats[0] / (round - roundStats[1]));
         System.out.println("");
