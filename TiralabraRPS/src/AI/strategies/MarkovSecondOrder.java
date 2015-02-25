@@ -1,5 +1,6 @@
-package AI;
+package AI.strategies;
 
+import AI.Strategy;
 import AI.Strategy;
 import GameLogic.Statistics;
 import java.util.Random;
@@ -74,6 +75,7 @@ public class MarkovSecondOrder extends Strategy {
         int[] b = Statistics.getLastTwoAiMoves();
         p1matrix[a[0]][b[0]][a[1]]++;
         p2matrix[a[0]][b[0]][b[1]]++;
+//        matrixDecay(0.95);
     }
 
     /**

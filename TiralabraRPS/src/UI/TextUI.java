@@ -17,7 +17,7 @@ public class TextUI {
      * @return
      */
     public String chooseHand(){
-        System.out.println("/***********************/");
+        System.out.println("----------------------");
         System.out.println("Valitse kätesi: ");
         System.out.println("(1)Kivi (2)Sakset (3)Paperi");
         System.out.println("(9)Näytä debug (0)lopeta peli");
@@ -35,7 +35,7 @@ public class TextUI {
      * @return
      */
     public boolean showResults(int round, int[] results, Hand p1, Hand p2, String tulos){
-        System.out.println("/******** Round " + round + ". *********/");
+        System.out.println("------ Round " + round + ". ------");
 //        System.out.println("*" + historia.toString() + "*");
         System.out.println(p1.toString(1));
         System.out.println("");
@@ -49,7 +49,7 @@ public class TextUI {
      * @return
      */
     public String askGameMode(){
-        System.out.println("/************************/");
+        System.out.println("/----Kivi-Sakset-Paperi-----/");
         System.out.println("Valitse pelimoodi: ");
         System.out.println("(1) pelaaja vs tekoäly");
         System.out.println("(2) tekoälyavustettu peli");
@@ -67,7 +67,6 @@ public class TextUI {
         System.out.println("(1) Helppo");
         System.out.println("(2) Keskitaso");
         System.out.println("(3) Haastava");
-        System.out.println("/************************/");
         String option = sc.nextLine();
         return option;
     }

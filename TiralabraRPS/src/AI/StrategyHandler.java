@@ -22,6 +22,7 @@ public class StrategyHandler extends Player {
     public int numMeta;
     public double decayMultiplier;
     private boolean decayOn;
+    private boolean failSafe;
 
     private Random rnd;
     private int id;
@@ -43,6 +44,7 @@ public class StrategyHandler extends Player {
         decayMultiplier = decay;
         strategies = new ArrayList();
         rnd = new Random();
+        failSafe = false;
     }
 
     /**
@@ -54,11 +56,12 @@ public class StrategyHandler extends Player {
      */
     @Override
     public int chooseHand(TextUI ui) {
-        if (Statistics.round > 2) {
+        if (Statistics.round > 2 && !failSafe) {
             return getBestChoice();
-        } else {
+        } 
+        else {
             return rnd.nextInt(3);
-//            return 1;
+//            return 0;
         }
     }
 
@@ -88,12 +91,12 @@ public class StrategyHandler extends Player {
                 prediction = counter;
                 counter = tmp;
             }
-            stratChoice[i][0] = wins[prediction];           //Voittaa pelaajan todennäköisimmän käden.
-            stratChoice[i][1] = prediction;                 //Voittaa pelaajan, jos pelaaja tietää että käytetään strategiaa.
-            stratChoice[i][2] = wins[stratChoice[i][0]];    //Voittaa pelaajan, jos pelaaja tietää, että ai tietää, että pelaaja tietää, että käytetään strategiaa.
-            stratChoice[i][3] = wins[wins[counter]];        //Voittaa pelaajan, jos pelaaja käyttää strategiaa ai:ta vastaan.
-            stratChoice[i][4] = wins[wins[stratChoice[i][3]]];//Jne..
-            stratChoice[i][5] = wins[wins[stratChoice[i][4]]];
+            stratChoice[i][0] = wins[prediction];               //Voittaa pelaajan todennäköisimmän käden.
+            stratChoice[i][1] = prediction;                     //Voittaa sen käden, joka voittaisi ylemmän vaihtoehdon käden.
+            stratChoice[i][2] = wins[stratChoice[i][0]];        //Voittaa sen käden, joka voittaisi ylemmän vaihtoehdon käden.
+            stratChoice[i][3] = wins[wins[counter]];            //Voittaa pelaajan käden, jos pelaaja käyttää samaa strategiaa ai:ta vastaan.
+            stratChoice[i][4] = wins[wins[stratChoice[i][3]]];  //Voittaa sen käden, joka voittaisi ylemmän vaihtoehdon käden.
+            stratChoice[i][5] = wins[wins[stratChoice[i][4]]];  //Voittaa sen käden, joka voittaisi ylemmän vaihtoehdon käden.
         }
     }
 
@@ -145,7 +148,7 @@ public class StrategyHandler extends Player {
                 } else if (Statistics.getLastOpponentMove(id) == wins[stratChoice[i][j]]) {
                     stratPerformance[i][j] -= 1.0;
                 } else {
-                    stratPerformance[i][j] += 0.0;
+                    stratPerformance[i][j] -= 0.5;
                 }
                 stratPerformance[i][j] *= decayMultiplier;
             }
@@ -158,18 +161,21 @@ public class StrategyHandler extends Player {
      * vanhat strategiapisteytykset häviävät "muistista"
      */
     public void updateMultiplier() {
-        if (id == Statistics.winner) {
+        if (id == Statistics.winner) {              //jos tekoäly voitti
             decayMultiplier *= 1.1;
-        } else if (Statistics.winner == 1) {
+        } else if (Statistics.winner == 1) {        //jos tasapeli
             decayMultiplier *= 0.95;
         } else {
-            decayMultiplier *= 0.9;
+            decayMultiplier *= 0.9;                 //jos tekoäly häivisi
         }
-        if (decayMultiplier > 1) {
-            decayMultiplier = 1.0;
+        if (decayMultiplier > 0.95) {
+            decayMultiplier = 0.95;
         }
-        if (decayMultiplier < 0.1) {
-            decayMultiplier = 0.1;
+        if (decayMultiplier < 0.4) {
+            decayMultiplier = 0.4;
+            failSafe = true;                        //kun tekoäly häviää tarpeeksi monta kertaa peräkkäin, se alkaa ehdottaa satunnaisia käsiä.
+        } else{
+            failSafe = false;                       //satunnaisuus poistetaan käytöstä kun tekoäly voittaa
         }
     }
 
@@ -190,6 +196,7 @@ public class StrategyHandler extends Player {
      */
     @Override
     public void printMetascores() {
+        System.out.println("Pisteytysmatriisi: ");
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 6; j++) {
                 System.out.printf("%2.1f", stratPerformance[i][j]);
@@ -197,6 +204,8 @@ public class StrategyHandler extends Player {
             }
             System.out.println("");
         }
+        System.out.print("Decay: ");
+        printDecay();
     }
 
     /**

@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package AI;
+package AI.strategies;
 
+import AI.Strategy;
 import AI.Strategy;
 import GameLogic.Statistics;
 
@@ -18,11 +19,13 @@ public class StupidAi extends Strategy{
     @Override
     public int predictPlayerMove() {
         return wins[Statistics.getLastP1Move()];
+//        return Statistics.getLastP1Move();
     }
 
     @Override
     public int predictAiMove() {
         return wins[Statistics.getLastP2Move()];
+//        return Statistics.getLastP2Move();
     }
 
     @Override

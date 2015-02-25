@@ -5,6 +5,7 @@
  */
 package AI;
 
+import AI.strategies.MarkovSecondOrder;
 import GameLogic.Statistics;
 import org.junit.Before;
 import org.junit.Test;

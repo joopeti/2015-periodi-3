@@ -1,6 +1,6 @@
 package GameLogic;
 
-import AI.RandomAi;
+import AI.strategies.*;
 import AI.*;
 import Utils.Hand;
 import UI.*;
@@ -55,16 +55,20 @@ public class Game {
         this.st = new Statistics();
         kadet = new Hand[]{kasi.Kivi, kasi.Sakset, kasi.Paperi};
         p1 = new Player();
-//        p1 = new StrategyHandler(0, 2, 0.95, true);
-////            p1.addStrategy(new MarkovFirstOrder());
-////            p1.addStrategy(new MarkovSecondOrder());
+//        p1 = new StrategyHandler(0, 3, 0.95, true);
+//            p1.addStrategy(new MarkovFirstOrder());
+//            p1.addStrategy(new MarkovSecondOrder());
 //            p1.addStrategy(new PatternMatching(5)); 
-//        p2 = new StrategyHandler(2, 2, 0.95, true);
-//            p2.addStrategy(new MarkovFirstOrder());
-////            p2.addStrategy(new MarkovSecondOrder());
-////            p2.addStrategy(new PatternMatching(4)); 
-//
-////        p2.addStrategy(new PatternMatching(5));
+
+        p2 = new StrategyHandler(2, 6, 0.95, true);
+//        p2.addStrategy(new PatternMaker());
+//        p2.addStrategy(new MarkovFirstOrder());
+//        p2.addStrategy(new MarkovSecondOrder());
+        p2.addStrategy(new PatternMatching(4));
+        p2.addStrategy(new PatternMatchingPlayer(4));
+
+            p2.addStrategy(new StupidAi());
+//        p2.addStrategy(new PatternMatching(5));
     }
 
     /**
@@ -72,11 +76,11 @@ public class Game {
      * sen jälkeen.
      */
     public void setSettings() {
-        setGameMode();
+//        setGameMode();
         running = true;
         print = true;
         debug = false;
-        roundLimit = 1000;
+        roundLimit = 200;
         Statistics.round = 1;
     }
 
@@ -127,15 +131,18 @@ public class Game {
                 case "1":
                     p2 = new StrategyHandler(2, 2, 0.95, false);
                     p2.addStrategy(new StupidAi());
+                    p2.addStrategy(new PatternMatching(5));
                     break OUTER;
                 case "2":
-                    p2 = new StrategyHandler(2, 2, 0.95, false);
-                    p2.addStrategy(new MarkovFirstOrder());
-                    break OUTER;
-                case "3":
                     p2 = new StrategyHandler(2, 3, 0.95, true);
                     p2.addStrategy(new MarkovFirstOrder());
+                    p2.addStrategy(new PatternMatching(5));
+                    break OUTER;
+                case "3":
+                    p2 = new StrategyHandler(2, 2, 0.95, true);
+                    p2.addStrategy(new MarkovFirstOrder());
                     p2.addStrategy(new MarkovSecondOrder());
+                    p2.addStrategy(new PatternMatching(5));
                     break OUTER;
                 default:
                     ui.errorMessage();
@@ -201,7 +208,7 @@ public class Game {
             playRound();
         }
         endGame();
-//        st.saveGameStatsToFile();
+        st.saveGameStatsToFile();
     }
 
     /**
@@ -235,7 +242,8 @@ public class Game {
     public void endGame() {
         running = false;
 //        ui.showResults(Statistics.round, st.getRoundStatistics(), kadet[0], kadet[0], tulos);
-        System.out.println("** Peli loppui. **");
+        System.out.println("");
+        System.out.println("****** TULOKSET ******");
         printDebug();
         st.printStatistics();
     }

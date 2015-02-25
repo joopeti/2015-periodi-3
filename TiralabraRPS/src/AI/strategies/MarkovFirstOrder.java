@@ -1,5 +1,6 @@
-package AI;
+package AI.strategies;
 
+import AI.Strategy;
 import AI.Strategy;
 import java.util.*;
 import GameLogic.Statistics;
@@ -89,7 +90,7 @@ public class MarkovFirstOrder extends Strategy {
         int[] aimoves = Statistics.getLastTwoAiMoves();
         playerFirstOrderMatrix[pmoves[0]][pmoves[1]]++;
         aiFirstOrderMatrix[aimoves[0]][aimoves[1]]++;
-        matrixDecay(decay);
+//        matrixDecay(0.95);
     }
 
     /**

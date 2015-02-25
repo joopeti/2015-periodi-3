@@ -160,16 +160,16 @@ public class Statistics {
             File file = new File("siirrot.txt");
             FileWriter fw = new FileWriter(file, true);
             pw = new PrintWriter(fw);
-            pw.println("stats: ");
-//            for (Integer playermove : p1moves) {
-//                pw.print(playermove + " ");
-//            }
+            pw.println("uudet: ");
+            for (int i = 0; i < round - 1; i++) {
+                pw.print(p1moves.get(i) + " ");
+            }
 //            pw.println();
 //            for (Integer aimove : p2moves) {
 //                pw.print(aimove + " ");
 //            }
-//            pw.println();
-//            pw.close();
+            pw.println();
+            pw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -177,7 +177,7 @@ public class Statistics {
     }
 
     public void printStatistics() {
-        System.out.println("p1-voitot: " + roundStats[0] + ", tasapelit: " + roundStats[1] + ", p2-voitot: " + roundStats[2]);
+        System.out.println("Voitot: " + roundStats[0] + ", Tasapelit: " + roundStats[1] + ", Häviöt: " + roundStats[2]);
         System.out.print("Voittoprosentti: ");
         System.out.printf("%2.2f", (double)roundStats[0] / (round - roundStats[1]));
         System.out.println("");

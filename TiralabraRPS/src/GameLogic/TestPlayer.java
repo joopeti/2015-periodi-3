@@ -27,6 +27,7 @@ public class TestPlayer extends Player {
         }
     }
 
+    @Override
     public int chooseHand(TextUI ui) {
         if (sc.hasNextInt()) {
             return sc.nextInt();

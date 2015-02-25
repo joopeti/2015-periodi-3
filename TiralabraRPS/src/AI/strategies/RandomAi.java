@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package AI;
+package AI.strategies;
 
+import AI.Strategy;
 import AI.Strategy;
 import java.util.Random;
 
