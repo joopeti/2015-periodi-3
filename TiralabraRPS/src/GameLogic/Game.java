@@ -60,14 +60,14 @@ public class Game {
 //            p1.addStrategy(new MarkovSecondOrder());
 //            p1.addStrategy(new PatternMatching(5)); 
 
-        p2 = new StrategyHandler(2, 6, 0.95, true);
+//        p2 = new StrategyHandler(2, 6, 0.95, true);
 //        p2.addStrategy(new PatternMaker());
 //        p2.addStrategy(new MarkovFirstOrder());
 //        p2.addStrategy(new MarkovSecondOrder());
-        p2.addStrategy(new PatternMatching(4));
-        p2.addStrategy(new PatternMatchingPlayer(4));
+//        p2.addStrategy(new PatternMatching(4));
+//        p2.addStrategy(new PatternMatchingPlayer(4));
 
-            p2.addStrategy(new StupidAi());
+//            p2.addStrategy(new StupidAi());
 //        p2.addStrategy(new PatternMatching(5));
     }
 
@@ -76,7 +76,7 @@ public class Game {
      * sen jälkeen.
      */
     public void setSettings() {
-//        setGameMode();
+        setGameMode();
         running = true;
         print = true;
         debug = false;
