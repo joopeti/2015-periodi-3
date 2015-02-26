@@ -54,9 +54,9 @@ public class Game {
         this.ui = new TextUI();
         this.st = new Statistics();
         kadet = new Hand[]{kasi.Kivi, kasi.Sakset, kasi.Paperi};
-        p1 = new Player();
         debug = false;
         print = true;
+        p1 = new Player();
     }
 
     /**
@@ -66,7 +66,7 @@ public class Game {
     public void setSettings() {
         setGameMode();
         running = true;
-        roundLimit = 200;
+        roundLimit = 1000000;
         Statistics.round = 1;
     }
 
@@ -118,20 +118,16 @@ public class Game {
             switch (i) {
                 case "1":
                     p2 = new StrategyHandler(2, 2, 0.95, false);
-                    p2.addStrategy(new StupidAi());
-                    p2.addStrategy(new PatternMatching(5));
+                    p2.addStrategy(new PatternMatching(3));
                     break OUTER;
                 case "2":
                     p2 = new StrategyHandler(2, 6, 0.95, true);
                     p2.addStrategy(new MarkovSecondOrder());
-//                    p2.addStrategy(new PatternMatching(5));
                     break OUTER;
                 case "3":
                     p2 = new StrategyHandler(2, 2, 0.95, true);
-//                    p2.addStrategy(new MarkovFirstOrder());
-//                    p2.addStrategy(new MarkovSecondOrder());
-                    p2.addStrategy(new StupidAi());
-                    p2.addStrategy(new PatternMatching(4));
+                    p2.addStrategy(new MarkovFirstOrder());
+                    p2.addStrategy(new PatternMatchingPlayer(4));
                     break OUTER;
                 default:
                     ui.errorMessage();
