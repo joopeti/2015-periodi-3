@@ -49,7 +49,7 @@ public class TextUI {
      * @return
      */
     public String askGameMode(){
-        System.out.println("/----Kivi-Sakset-Paperi-----/");
+        System.out.println("***** Kivi-Sakset-Paperi *****");
         System.out.println("Valitse pelimoodi: ");
         System.out.println("(1) pelaaja vs tekoäly");
         System.out.println("(2) tekoälyavustettu peli");

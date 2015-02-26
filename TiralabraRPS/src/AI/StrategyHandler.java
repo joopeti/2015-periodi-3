@@ -39,8 +39,8 @@ public class StrategyHandler extends Player {
         numStrat = 0;
         this.numMeta = numMeta;
         this.decayOn = decayOn;
-        stratPerformance = new double[3][6];
-        stratChoice = new int[3][6];
+        stratPerformance = new double[6][6];
+        stratChoice = new int[6][6];
         decayMultiplier = decay;
         strategies = new ArrayList();
         rnd = new Random();
@@ -197,8 +197,8 @@ public class StrategyHandler extends Player {
     @Override
     public void printMetascores() {
         System.out.println("Pisteytysmatriisi: ");
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 6; j++) {
+        for (int i = 0; i < numStrat; i++) {
+            for (int j = 0; j < numMeta; j++) {
                 System.out.printf("%2.1f", stratPerformance[i][j]);
                 System.out.print(": ");
             }
@@ -212,8 +212,8 @@ public class StrategyHandler extends Player {
      * Tulostaa Metastrategioiden valitseman käden.
      */
     public void printMetaChoices() {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 6; j++) {
+        for (int i = 0; i < numStrat; i++) {
+            for (int j = 0; j < numMeta; j++) {
                 System.out.print(stratChoice[i][j] + " ");
                 System.out.print(": ");
             }

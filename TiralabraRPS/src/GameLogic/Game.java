@@ -55,20 +55,8 @@ public class Game {
         this.st = new Statistics();
         kadet = new Hand[]{kasi.Kivi, kasi.Sakset, kasi.Paperi};
         p1 = new Player();
-//        p1 = new StrategyHandler(0, 3, 0.95, true);
-//            p1.addStrategy(new MarkovFirstOrder());
-//            p1.addStrategy(new MarkovSecondOrder());
-//            p1.addStrategy(new PatternMatching(5)); 
-
-//        p2 = new StrategyHandler(2, 6, 0.95, true);
-//        p2.addStrategy(new PatternMaker());
-//        p2.addStrategy(new MarkovFirstOrder());
-//        p2.addStrategy(new MarkovSecondOrder());
-//        p2.addStrategy(new PatternMatching(4));
-//        p2.addStrategy(new PatternMatchingPlayer(4));
-
-//            p2.addStrategy(new StupidAi());
-//        p2.addStrategy(new PatternMatching(5));
+        debug = false;
+        print = true;
     }
 
     /**
@@ -78,8 +66,6 @@ public class Game {
     public void setSettings() {
         setGameMode();
         running = true;
-        print = true;
-        debug = false;
         roundLimit = 200;
         Statistics.round = 1;
     }
@@ -106,6 +92,8 @@ public class Game {
                     p1.addStrategy(new MarkovFirstOrder());
                     p1.addStrategy(new MarkovSecondOrder());
                     p1.addStrategy(new PatternMatching(5));
+                    p1.addStrategy(new PatternMatchingPlayer(5));
+                    p1.addStrategy(new StupidAi());
                     debug = true;
                     break OUTER;
                 case "3":
@@ -134,15 +122,16 @@ public class Game {
                     p2.addStrategy(new PatternMatching(5));
                     break OUTER;
                 case "2":
-                    p2 = new StrategyHandler(2, 3, 0.95, true);
-                    p2.addStrategy(new MarkovFirstOrder());
-                    p2.addStrategy(new PatternMatching(5));
+                    p2 = new StrategyHandler(2, 6, 0.95, true);
+                    p2.addStrategy(new MarkovSecondOrder());
+//                    p2.addStrategy(new PatternMatching(5));
                     break OUTER;
                 case "3":
                     p2 = new StrategyHandler(2, 2, 0.95, true);
-                    p2.addStrategy(new MarkovFirstOrder());
-                    p2.addStrategy(new MarkovSecondOrder());
-                    p2.addStrategy(new PatternMatching(5));
+//                    p2.addStrategy(new MarkovFirstOrder());
+//                    p2.addStrategy(new MarkovSecondOrder());
+                    p2.addStrategy(new StupidAi());
+                    p2.addStrategy(new PatternMatching(4));
                     break OUTER;
                 default:
                     ui.errorMessage();
