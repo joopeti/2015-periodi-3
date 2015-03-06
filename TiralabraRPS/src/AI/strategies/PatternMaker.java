@@ -30,7 +30,7 @@ public class PatternMaker extends Strategy{
     @Override
     public void updateModels(double decay) {
         if(Statistics.round % 4 == 0){
-            i = (i + Statistics.round) % 1231231;
+            i = (i + Statistics.round) % 1231231;       //luku estää luvun ylivuodon
         }
     }
 

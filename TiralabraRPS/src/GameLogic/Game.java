@@ -66,7 +66,7 @@ public class Game {
     public void setSettings() {
         setGameMode();
         running = true;
-        roundLimit = 1000000;
+        roundLimit = 50;
         Statistics.round = 1;
     }
 
@@ -127,7 +127,7 @@ public class Game {
                 case "3":
                     p2 = new StrategyHandler(2, 2, 0.95, true);
                     p2.addStrategy(new MarkovFirstOrder());
-                    p2.addStrategy(new PatternMatchingPlayer(4));
+                    p2.addStrategy(new PatternMatchingPlayer(3));
                     break OUTER;
                 default:
                     ui.errorMessage();

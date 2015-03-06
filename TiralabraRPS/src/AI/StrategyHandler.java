@@ -4,7 +4,6 @@ import GameLogic.Player;
 import GameLogic.Statistics;
 import UI.TextUI;
 import Utils.Lista;
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -18,16 +17,35 @@ public class StrategyHandler extends Player {
      */
     public double[][] stratPerformance;
     public int[][] stratChoice;
+    
+    /**
+     * Strategioiden ja metastrategioiden lukumäärät.
+     */
     public int numStrat;
     public int numMeta;
+    
+    /**
+     * Decay on 0-1 välillä oleva luku jolla kerrotaan pisteytykset kierroksen lopuksi.
+     */
     public double decayMultiplier;
+    /**
+     * Kertoo onko decay päällä.
+     */
     private boolean decayOn;
+    /**
+     * Kertoo onko failSafe (eli satunnaiset valinnat) kytketty päälle.
+     */
     private boolean failSafe;
 
     private Random rnd;
+    /**
+     * Luku jota käytetään kahden tekoälyn välisissä testeissä erottelemaan tekoälyjen siirrot toisistaan.
+     */
     private int id;
-
-    public ArrayList<Strategy> strategies;
+    /**
+     * Lista luokan käyttämistä strategioista. Tällä hetkellä max määrä 6.
+     */
+    public Lista<Strategy> strategies;
     /**
      * Antaa indeksin perusteella kokonaisluvun (=käden), joka voittaa indeksin
      * (=annetun käden). Esim 0 = kivi, 2 = paperi wins[0] == 2;
@@ -42,16 +60,15 @@ public class StrategyHandler extends Player {
         stratPerformance = new double[6][6];
         stratChoice = new int[6][6];
         decayMultiplier = decay;
-        strategies = new ArrayList();
+        strategies = new Lista();
         rnd = new Random();
         failSafe = false;
     }
 
     /**
      * Ennakoi pelaajan seuraavan siirron ja palauttaa parhaiten menestyneimmän
-     * metastrategian ehdottaman käden. Jos pelihistoria on liian lyhyt, metodi
-     * palauttaa satunnaisen käden.
-     *
+     * metastrategian ehdottaman käden. 
+     * Jos pelihistoria on liian lyhyt tai failSafe-toiminto on päällä, metodi palauttaa satunnaisen käden.
      * @return
      */
     @Override
@@ -61,7 +78,6 @@ public class StrategyHandler extends Player {
         } 
         else {
             return rnd.nextInt(3);
-//            return 0;
         }
     }
 
@@ -102,7 +118,6 @@ public class StrategyHandler extends Player {
 
     /**
      * Palauttaa parhaan metastrategian ehdottaman käden.
-     *
      * @return
      */
     public int getBestChoice() {
@@ -127,7 +142,8 @@ public class StrategyHandler extends Player {
         if (decayOn) {
             updateMultiplier();
         }
-        for (Strategy strat : strategies) {
+        for (int i = 0; i < numStrat; i++) {
+            Strategy strat = strategies.get(i);
             if (Statistics.round >= strat.getFirstRoundToUpdateModels()) {
                 strat.updateModels(decayMultiplier);
             }

@@ -10,7 +10,7 @@ import GameLogic.Statistics;
 import Utils.Lista;
 
 /**
- * Etsii pelatuista siirroista toistuvia kuvioita ja ennustaa vastustajan
+ * Etsii pelatuista siirtoyhdistelmistä toistuvuuksia ja ennustaa vastustajan
  * siirron pisimmän löydetyn kuvion perusteella.
  */
 public class PatternMatching extends Strategy {
@@ -21,8 +21,7 @@ public class PatternMatching extends Strategy {
     int patternLength;
 
     /**
-     * Ottaa pa
-     *
+     * Konstruktori.
      * @param patternLength: etsittävien patternien maksimipituus.
      */
     public PatternMatching(int patternLength) {
@@ -31,18 +30,17 @@ public class PatternMatching extends Strategy {
 
     /**
      * Palauttaa p1:n todennäköisimmän siirron.
-     *
      * @return
      */
     @Override
     public int predictPlayerMove() {
-        searchPatterns(patternLength, Statistics.p1moves, 1);
+        searchPatterns(patternLength, 1);
         bestLength = 0;
         return p1_prediction;
     }
 
     /**
-     * Luo annetun pituisen patternin ja etsii vastaavuuksia siihen aiemmista
+     * Luo annetun pituisen patternin molempien pelaajien siirroista ja etsii vastaavuuksia niihin aiemmista
      * siirroista.
      *
      * @param n patternin maksimipituus
@@ -50,7 +48,7 @@ public class PatternMatching extends Strategy {
      * tai p2)
      * @param id listan pelaajan id.
      */
-    private void searchPatterns(int n, Lista<Integer> siirrot, int id) {
+    private void searchPatterns(int n, int id) {
         int[] p1pattern = getPattern(n, Statistics.p1moves);
         int[] p2pattern = getPattern(n, Statistics.p2moves);
         int length = 0;
@@ -84,8 +82,6 @@ public class PatternMatching extends Strategy {
         if (Statistics.round > n + 1) {
             for (int i = 0; i < n; i++) {
                 pattern[i] = siirrot.get(Statistics.round - i - 1);  // luo kuvion n:stä viimeisimmästä siirrosta.
-//                System.out.print(pattern[i] + ", ");
-                
             }
         }
         return pattern;
@@ -109,36 +105,25 @@ public class PatternMatching extends Strategy {
             bestLength = length;
             p2_prediction = Statistics.p2moves.get(i + length);
         }
-//        System.out.println("Löydettiin " + length + "-pitkä kuvio. Ennustus: " + p1_prediction);
-
     }
 
     /**
      * Palauttaa p2:n todennäköisimmän siirron.
-     *
      * @return
      */
     @Override
     public int predictAiMove() {
-        searchPatterns(patternLength, Statistics.p2moves, 2);
+        searchPatterns(patternLength, 2);
         bestLength = 0;
         return p2_prediction;
     }
-
-    /**
-     * Nollaa bestLength-muuttujan seuraavan kierroksen ennakointeja varten.
-     *
-     * @param decay
-     */
+    
     @Override
     public void updateModels(double decay) {
     }
 
     /**
-     * Palauttaa vuoron jonka jälkeen algoritmi voi alkaa päivittämään itseään.
-     * Oikeastaan täysin turha metodi joka kuitenkin pitää implementoida
-     * yliluokasta.
-     *
+     * Palauttaa vuoron jonka jälkeen algoritmi voi alkaa päivittämään itseään.     *
      * @return
      */
     @Override

@@ -21,8 +21,6 @@ public class PatternMatchingPlayer extends Strategy {
     int patternLength;
 
     /**
-     * Ottaa pa
-     *
      * @param patternLength: etsittävien patternien maksimipituus.
      */
     public PatternMatchingPlayer(int patternLength) {
@@ -30,7 +28,7 @@ public class PatternMatchingPlayer extends Strategy {
     }
 
     /**
-     * Palauttaa p1:n todennäköisimmän siirron.
+     * Palauttaa p1:n todennäköisimmän siirron, etsimällä pelaajan kaikkien siirtojen historiasta toistuvuuksia.
      *
      * @return
      */
@@ -51,16 +49,18 @@ public class PatternMatchingPlayer extends Strategy {
      * @param id listan pelaajan id.
      */
     private void searchPatterns(int n, Lista<Integer> siirrot, int id) {
-        int[] p1pattern = getPattern(n, siirrot);
+        int[] pattern = getPattern(n, siirrot);
         int length = 0;
             OUTER:
             for (int i = Statistics.round - 2; i >= n; i--) {   //lähtee toisiksiviimeisestä siirrosta ensimmäiseen asti kunnes löydetään vastaava kuvio
                 for (int j = 0; j < n; j++) {
-                    if (p1pattern[j] == Statistics.p1moves.get(i - j)) {
+                    if (pattern[j] == siirrot.get(i - j)) {
                         length++;
+                        //jos löydetään parasta pidempi pattern, niin ennustusta päivitetään. 
                         if (length > bestLength) {
                             foundPatternLongerThanBest(i - j, j + 1, id);
                         } 
+                        //jos löydetään maksimipituinen pattern, niin etsintä lopetetaan.
                         if(length == n){
                             break OUTER;
                         }
@@ -83,8 +83,6 @@ public class PatternMatchingPlayer extends Strategy {
         if (Statistics.round > n + 1) {
             for (int i = 0; i < n; i++) {
                 pattern[i] = siirrot.get(Statistics.round - i - 1);  // luo kuvion n:stä viimeisimmästä siirrosta.
-//                System.out.print(pattern[i] + ", ");
-                
             }
         }
         return pattern;
@@ -113,8 +111,7 @@ public class PatternMatchingPlayer extends Strategy {
     }
 
     /**
-     * Palauttaa p2:n todennäköisimmän siirron.
-     *
+     * Palauttaa p2:n todennäköisimmän siirron, etsimällä pelaajan kaikkien siirtojen historiasta toistuvuuksia.
      * @return
      */
     @Override
@@ -124,20 +121,12 @@ public class PatternMatchingPlayer extends Strategy {
         return p2_prediction;
     }
 
-    /**
-     * Nollaa bestLength-muuttujan seuraavan kierroksen ennakointeja varten.
-     *
-     * @param decay
-     */
     @Override
     public void updateModels(double decay) {
     }
 
     /**
-     * Palauttaa vuoron jonka jälkeen algoritmi voi alkaa päivittämään itseään.
-     * Oikeastaan täysin turha metodi joka kuitenkin pitää implementoida
-     * yliluokasta.
-     *
+     * Palauttaa vuoron jonka jälkeen algoritmi voi alkaa päivittämään itseään.     *
      * @return
      */
     @Override

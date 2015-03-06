@@ -27,6 +27,11 @@ public class TestPlayer extends Player {
         }
     }
 
+    /**
+     * Lukee pelattujen siirtojen listalta seuraavan siirron, kunnes siirtoja ei enään ole.
+     * @param ui
+     * @return 
+     */
     @Override
     public int chooseHand(TextUI ui) {
         if (sc.hasNextInt()) {
