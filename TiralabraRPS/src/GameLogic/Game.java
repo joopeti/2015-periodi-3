@@ -1,7 +1,9 @@
 package GameLogic;
 
+import Players.StrategyHandler;
+import Players.TestPlayer;
+import Players.Player;
 import AI.strategies.*;
-import AI.*;
 import Utils.Hand;
 import UI.*;
 

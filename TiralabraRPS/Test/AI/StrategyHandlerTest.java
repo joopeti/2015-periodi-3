@@ -5,6 +5,7 @@
  */
 package AI;
 
+import Players.StrategyHandler;
 import AI.strategies.MarkovFirstOrder;
 import GameLogic.Game;
 import GameLogic.Statistics;

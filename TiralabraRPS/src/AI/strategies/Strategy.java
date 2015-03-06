@@ -1,4 +1,4 @@
-package AI;
+package AI.strategies;
 
 /** 
  * Strategioiden yliluokka, mahdollistaa yhtenevät operaatiot erilaisillekin algoritmeille.

@@ -1,6 +1,6 @@
-package GameLogic;
+package Players;
 
-import AI.Strategy;
+import AI.strategies.Strategy;
 import UI.TextUI;
 import java.io.File;
 import java.io.FileNotFoundException;

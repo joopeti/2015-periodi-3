@@ -5,7 +5,6 @@
  */
 package AI.strategies;
 
-import AI.Strategy;
 import GameLogic.Statistics;
 
 /**

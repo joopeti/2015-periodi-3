@@ -1,6 +1,7 @@
-package AI;
+package Players;
 
-import GameLogic.Player;
+import AI.strategies.Strategy;
+import Players.Player;
 import GameLogic.Statistics;
 import UI.TextUI;
 import Utils.Lista;

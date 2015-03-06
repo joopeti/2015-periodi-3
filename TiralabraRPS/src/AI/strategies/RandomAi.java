@@ -5,8 +5,6 @@
  */
 package AI.strategies;
 
-import AI.Strategy;
-import AI.Strategy;
 import java.util.Random;
 
 /**

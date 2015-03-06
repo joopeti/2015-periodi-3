@@ -52,8 +52,8 @@ public class TextUI {
         System.out.println("***** Kivi-Sakset-Paperi *****");
         System.out.println("Valitse pelimoodi: ");
         System.out.println("(1) pelaaja vs tekoäly");
-        System.out.println("(2) tekoälyavustettu peli");
-        System.out.println("(3) pelaaja vs testipelaaja??");
+        System.out.println("(2) tekoälyavustettu peli (tarkoitettu esim. netissä toista tekoälyä vastaan pelaamiseen)");
+        System.out.println("(3) pelaaja vs testipelaaja (lähinnä testausta varten luoto pelimoodi)");
         String option = sc.nextLine();
         return option;
     }
