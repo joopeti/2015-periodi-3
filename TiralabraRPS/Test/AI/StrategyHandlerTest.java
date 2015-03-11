@@ -74,7 +74,7 @@ public class StrategyHandlerTest {
         Statistics.round = 3;
         mk.playerFirstOrderMatrix = new double[][]{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}};
         st.updateAllStrategyModels();
-        assertTrue(1.0 == mk.playerFirstOrderMatrix[1][0]);
+        assertTrue(4.0 == mk.playerFirstOrderMatrix[0][2]);
     }
 
     @Test
@@ -91,7 +91,6 @@ public class StrategyHandlerTest {
     public void metaScoresAreIncrementedAfterWinningChoice() {
         st.addStrategy(mk);
         st.updateMetaScores();
-        System.out.println(st.stratPerformance[0][0]);
         assertTrue(2.0 == st.stratPerformance[0][0]);
     }
 
@@ -100,7 +99,6 @@ public class StrategyHandlerTest {
         st.addStrategy(mk);
         st.addStrategy(mk);
         st.updateMetaScores();
-        System.out.println(st.stratPerformance[1][0]);
         assertTrue(-0.5 == st.stratPerformance[1][0]);
     }
 

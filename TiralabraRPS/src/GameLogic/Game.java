@@ -15,7 +15,7 @@ import UI.*;
 public class Game {
 
     private Hand kasi;
-    private Hand[] kadet;
+    private final Hand[] kadet;
     /**
      * Valittu pelimoodi. 0 = normaali peli tekoälyä vastaan. 1 = tekoäly
      * näyttää valintansa etukäteen, voidaan käyttää tekoäly vs tekoäly
@@ -65,10 +65,10 @@ public class Game {
      * Kysyy pelaajalta pelin asetukset ennen peliä ja laittaa pelin pyörimään
      * sen jälkeen.
      */
-    public void setSettings() {
-        setGameMode();
-        running = true;
+    public void setSettings(String selection) {
         roundLimit = 50;
+        setGameMode(selection);
+        running = true;
         Statistics.round = 1;
     }
 
@@ -77,15 +77,14 @@ public class Game {
      * 1 = ihminen vs tekoäly 2 = tekoäly vs tekoäly (tekoäly näyttää minkä
      * siirron aikoo tehdä etukäteen) 3 = ihminen vs testipelaaja
      */
-    public void setGameMode() {
+    public void setGameMode(String i) {
         OUTER:
         while (true) {
-            String i = ui.askGameMode();
             switch (i) {
                 case "1":
                     gamemode = 1;
                     print = true;
-                    setDifficulty();
+                    setDifficulty(ui.askDifficulty());
                     break OUTER;
                 case "2":
                     gamemode = 2;
@@ -96,14 +95,18 @@ public class Game {
                     p1.addStrategy(new PatternMatching(5));
                     p1.addStrategy(new PatternMatchingPlayer(5));
                     p1.addStrategy(new StupidAi());
+                    roundLimit = 1000;
                     debug = true;
                     break OUTER;
                 case "3":
                     gamemode = 3;
                     p2 = new TestPlayer();
+                    p1 = new TestPlayer();
+                    print = false;
                     break OUTER;
                 default:
                     ui.errorMessage();
+                    i = ui.askGameMode();
                     break;
             }
         }
@@ -113,10 +116,9 @@ public class Game {
      * Kysyy pelaajalta vaikeustason ja säätää tekoälyn sen mukaan. 1 = helppo,
      * 2 = keskitaso, 3 = haastava
      */
-    public void setDifficulty() {
+    public void setDifficulty(String i) {
         OUTER:
         while (true) {
-            String i = ui.askDifficulty();
             switch (i) {
                 case "1":
                     p2 = new StrategyHandler(2, 2, 0.95, false);
@@ -133,6 +135,7 @@ public class Game {
                     break OUTER;
                 default:
                     ui.errorMessage();
+                    i = ui.askGameMode();
                     break;
             }
         }
@@ -155,6 +158,10 @@ public class Game {
             st.roundIncrement();
         }
     }
+    
+    /**
+     * Tarkistaa onko tulostus tai debug päällä ja tulostaa sen perusteella.
+     */
 
     public void checkPrints() {
         if (print) {
@@ -169,14 +176,14 @@ public class Game {
      * Tarkistaa kuka voitti kierroksen ja päivittää tulokset tilastot-luokkaan.
      * Valitsee oikean tuloksen näytettäväksi pelaajalle.
      *
-     * @param pelaaja
-     * @param tekoaly
+     * @param p1
+     * @param p2
      */
-    public void checkResults(int pelaaja, int tekoaly) {
-        if (pelaaja == tekoaly) {
+    public void checkResults(int p1, int p2) {
+        if (p1 == p2) {
             st.updateRoundStatistics(1);
             tulos = "TASAPELI";
-        } else if ((pelaaja == 0 && tekoaly == 1) || (pelaaja == 1 && tekoaly == 2) || (pelaaja == 2 && tekoaly == 0)) {
+        } else if ((p1 == 0 && p2 == 1) || (p1 == 1 && p2 == 2) || (p1 == 2 && p2 == 0)) {
             st.updateRoundStatistics(0);
             tulos = "VOITIT!";
         } else {
@@ -186,16 +193,15 @@ public class Game {
     }
 
     /**
-     * Käynnistää pelin. Aluksi kysytään asetukset, jonka jälkeen pelaaja 1:ltä
-     * ja pelaaja 2:lta kysytään kädet ja annetaan ne playround-metodille.
+     * Käynnistää pelin. Kysyy pelaajalta asetukset ja pyörii niin kauan kunnes kierrosraja tulee täyteen tai pelaaja lopettaa pelin.
      */
     public void start() {
-        setSettings();
-        while (Statistics.round < roundLimit && running) {
+        setSettings(ui.askGameMode());
+        while (Statistics.round <= roundLimit && running) {
             playRound();
         }
         endGame();
-        st.saveGameStatsToFile();
+//        st.saveGameStatsToFile();
     }
 
     /**
@@ -228,7 +234,6 @@ public class Game {
      */
     public void endGame() {
         running = false;
-//        ui.showResults(Statistics.round, st.getRoundStatistics(), kadet[0], kadet[0], tulos);
         System.out.println("");
         System.out.println("****** TULOKSET ******");
         printDebug();

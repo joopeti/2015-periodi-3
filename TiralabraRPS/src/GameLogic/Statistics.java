@@ -164,10 +164,10 @@ public class Statistics {
             for (int i = 0; i < round - 1; i++) {
                 pw.print(p1moves.get(i) + " ");
             }
-//            pw.println();
-//            for (Integer aimove : p2moves) {
-//                pw.print(aimove + " ");
-//            }
+            pw.println();
+            for (int i = 0; i < round - 1; i++) {
+                pw.print(p2moves.get(i) + " ");
+            }
             pw.println();
             pw.close();
         } catch (IOException e) {
@@ -178,7 +178,7 @@ public class Statistics {
 
     public void printStatistics() {
         System.out.println("Voitot: " + roundStats[0] + ", Tasapelit: " + roundStats[1] + ", Häviöt: " + roundStats[2]);
-        System.out.print("Voittoprosentti: ");
+        System.out.print("Voittosuhde: ");
         System.out.printf("%2.2f", (double)roundStats[0] / (round - roundStats[1]));
         System.out.println("");
 //        System.out.println(p1moves);

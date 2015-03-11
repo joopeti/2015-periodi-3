@@ -7,6 +7,7 @@ package GameLogic;
 
 import GameLogic.Game;
 import GameLogic.Game;
+import java.io.ByteArrayInputStream;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -31,42 +32,51 @@ public class GameTest {
 
     @Test
     public void gameIsRunningAfterSettings() {
-        game.setSettings();
+        game.setSettings("3");
         assertEquals(true, game.running);
     }
 
     @Test
     public void gameTurnIsOneAfterSettings() {
-        game.setSettings();
+        game.setSettings("3");
         assertEquals(1, Statistics.round);
     }
 
     @Test
-    public void runningIsSetFalseAfterNegativeAsInput() {
-        game.setSettings();
+    public void gameTurnIsTwoAfterOneRound() {
+        game.setSettings("3");
         game.playRound();
+        assertEquals(2, Statistics.round);
+    }
+    
+
+    @Test
+    public void endGameSetsRunningFalse() {
+        game.running = true;
+        game.setSettings("3");
+        game.endGame();
         assertEquals(false, game.running);
     }
 
     @Test
     public void turnIncrementsAfterPlayedRound() {
-        game.setSettings();
+        game.setSettings("3");
         game.playRound();
         assertEquals(2, Statistics.round);
     }
 
     @Test
     public void checkWinnersUpdatesScoresWhenPlayerWins() {
-        game.setSettings();
+        game.setSettings("3");
         for (int i = 0; i < 10; i++) {
             game.checkResults(0, 1);
         }
         assertEquals(10, Statistics.roundStats[0]);
     }
-    
-        @Test
+
+    @Test
     public void checkWinnersUpdatesScoresWhenAiWins() {
-        game.setSettings();
+        game.setSettings("3");
         for (int i = 0; i < 10; i++) {
             game.checkResults(2, 1);
         }
@@ -75,7 +85,7 @@ public class GameTest {
 
     @Test
     public void checkWinnersDoesntGivePointsForLosing() {
-        game.setSettings();
+        game.setSettings("3");
         for (int i = 0; i < 10; i++) {
             game.checkResults(1, 0);
         }
@@ -84,7 +94,7 @@ public class GameTest {
 
     @Test
     public void checkWinnersCountsDraws() {
-        game.setSettings();
+        game.setSettings("3");
         for (int i = 0; i < 10; i++) {
             game.checkResults(1, 1);
             game.checkResults(0, 0);

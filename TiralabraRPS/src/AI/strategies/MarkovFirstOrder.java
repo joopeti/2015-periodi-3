@@ -84,10 +84,10 @@ public class MarkovFirstOrder extends Strategy {
      */
     @Override
     public void updateModels(double decay) {
-        int[] pmoves = Statistics.getLastTwoPlayerMoves();
-        int[] aimoves = Statistics.getLastTwoAiMoves();
-        playerFirstOrderMatrix[pmoves[0]][pmoves[1]]++;
-        aiFirstOrderMatrix[aimoves[0]][aimoves[1]]++;
+        int[] p1moves = Statistics.getLastTwoPlayerMoves();
+        int[] p2moves = Statistics.getLastTwoAiMoves();
+        playerFirstOrderMatrix[p1moves[0]][p1moves[1]]++;
+        aiFirstOrderMatrix[p2moves[0]][p2moves[1]]++;
 //        matrixDecay(0.95);
     }
 

@@ -18,12 +18,16 @@ import java.util.logging.Logger;
 public class TestPlayer extends Player {
 
     Scanner sc;
-
+    String s;
+    boolean manual;
+    private int i;
+    
     public TestPlayer() {
         try {
             sc = new Scanner(new File("pelaajasiirrot.txt"));
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(TestPlayer.class.getName()).log(Level.SEVERE, null, ex);
+            manual = true;
+            s = "11201020120012020202012002121120102012001202020201200212";
         }
     }
 
@@ -34,6 +38,10 @@ public class TestPlayer extends Player {
      */
     @Override
     public int chooseHand(TextUI ui) {
+        i++;
+        if(manual){
+            return s.charAt(i);
+        }
         if (sc.hasNextInt()) {
             return sc.nextInt();
         } else if(sc.hasNextLine()){
